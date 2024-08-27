@@ -49,7 +49,7 @@ export default function DeleteClassroomModal({ open, setIsOpen, deleteId }) {
               and student data.
             </p>
 
-            <div className="flex items-center gap-2 mt-5">
+            <div className="flex items-center gap-2 mt-10">
               <button
                 onClick={() => setIsOpen(false)}
                 className="py-2 px-3 rounded-lg text-xs font-bold text-zinc-600 hover:text-black"

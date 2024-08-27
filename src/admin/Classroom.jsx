@@ -22,6 +22,8 @@ import { FcEditImage } from "react-icons/fc";
 import { useLocation } from "react-router-dom";
 import DeleteClassroomModal from "../components/ui/DeleteClassroomModal";
 import { PiCaretUpDownFill } from "react-icons/pi";
+import UpdateModal from "../components/admin_components/UpdateModal";
+import ArchivedModal from "../components/admin_components/ArchivedModal";
 
 import { DeleteIcon, EditIcon } from "../icons/Icons";
 import { CgOptions } from "react-icons/cg";
@@ -143,6 +145,8 @@ const ClassroomList = () => {
   const [classroomData, setClassroomData] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [open, setIsOpen] = useState(false);
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const [archivedModal, setArchivedModal] = useState(false);
 
   const ClassroomsStyle = [
     {
@@ -276,7 +280,7 @@ const ClassroomList = () => {
             </div>
           </div>
           {isLoaded && <Divider />}
-          <div className="w-full flex justify-between items-center gap-4 p-3 mb-4">
+          <div className="w-full h-full flex justify-between items-center gap-4 p-3 mb-4">
             <Skeleton className="w-full rounded-md" isLoaded={isLoaded}>
               <p className="text-xs text-zinc-600 font-bold">
                 {data.description}
@@ -298,8 +302,10 @@ const ClassroomList = () => {
                 selectionMode="single"
                 disallowEmptySelection
               >
-                <DropdownItem>Edit</DropdownItem>
-                <DropdownItem onClick={() => setIsOpen(true)}>
+                <DropdownItem onClick={() => setOpenUpdateModal(true)}>
+                  Edit
+                </DropdownItem>
+                <DropdownItem onClick={() => setArchivedModal(true)}>
                   Archived
                 </DropdownItem>
                 <DropdownItem onClick={() => setIsOpen(true)}>
@@ -307,13 +313,22 @@ const ClassroomList = () => {
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
-
-            <DeleteClassroomModal
-              open={open}
-              setIsOpen={setIsOpen}
-              deleteId={data.id}
-            />
           </div>
+
+          <UpdateModal
+            openUpdateModal={openUpdateModal}
+            setOpenUpdateModal={setOpenUpdateModal}
+          />
+
+          <DeleteClassroomModal
+            open={open}
+            setIsOpen={setIsOpen}
+            deleteId={data.id}
+          />
+          <ArchivedModal
+            archivedModal={archivedModal}
+            setIsArchivedModal={setArchivedModal}
+          />
         </div>
       ))}
     </div>

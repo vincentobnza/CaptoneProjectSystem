@@ -60,7 +60,7 @@ export default function Sidebar({ active }) {
               to={item.link}
               className={`p-3 flex justify-start items-center gap-3 text-xs text-zinc-800 hover:bg-zinc-50 font-semibold hover:text-zinc-600 ease-in duration-300 relative ${
                 active === item.link
-                  ? "bg-zinc-50 text-zinc-600 before:absolute before:-left-1 before:h-full before:w-[4px] before:bg-zinc-600"
+                  ? "bg-zinc-50 text-zinc-600 before:absolute before:-left-1 before:h-full before:w-[3px] before:bg-zinc-500"
                   : ""
               }`}
             >
