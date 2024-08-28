@@ -3,28 +3,29 @@ import { AnimatePresence, motion } from "framer-motion";
 import supabase from "../../config/supabaseClient";
 import { TiFolderDelete } from "react-icons/ti";
 
-export default function DeleteClassroomModal({ open, setIsOpen, deleteId }) {
-  const DeleteClassroom = async (id) => {
-    try {
-      const { data, error } = await supabase
-        .from("classrooms")
-        .delete()
-        .eq("id", id);
+export default function DeleteClassroomModal({
+  open,
+  setIsOpen,
+  classroom,
+  onDelete,
+}) {
+  const handleDelete = async () => {
+    const { data, error } = await supabase
+      .from("classrooms")
+      .delete()
+      .eq("id", classroom.id);
 
-      if (error) {
-        console.error("Error deleting classroom:", error.message);
-        return null;
-      }
-
-      console.log("Classroom deleted successfully:", data);
-      setIsOpen(false);
-      return data;
-    } catch (err) {
-      console.error("Unexpected error:", err);
-      return null;
+    if (error) {
+      throw error;
+    }
+    setIsOpen(false);
+    if (data) {
+      console.log("Before onDelete");
+      onDelete(classroom.id);
+      console.log("After onDelete");
+      console.log("Classroom deleted");
     }
   };
-
   return (
     <AnimatePresence>
       {open && (
@@ -42,6 +43,7 @@ export default function DeleteClassroomModal({ open, setIsOpen, deleteId }) {
             <img
               src="https://cdn-icons-png.flaticon.com/128/484/484560.png"
               className="w-10 mb-4"
+              alt="Delete icon"
             />
             <h1 className="text-xl font-semibold">Delete this classroom?</h1>
             <p className="text-xs text-zinc-600">
@@ -57,7 +59,7 @@ export default function DeleteClassroomModal({ open, setIsOpen, deleteId }) {
                 Cancel deletion
               </button>
               <button
-                onClick={() => DeleteClassroom(deleteId)}
+                onClick={handleDelete}
                 className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold bg-red-500 text-white"
               >
                 Confirm Deletion

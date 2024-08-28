@@ -4,7 +4,6 @@ import AdminNavbar from "../components/AdminNavbar";
 import { IoAdd } from "react-icons/io5";
 import CreateClassroomModal from "../components/CreateClassroomModal";
 import supabase from "../config/supabaseClient";
-import { PiStudentFill } from "react-icons/pi";
 import {
   Button,
   Divider,
@@ -16,9 +15,6 @@ import {
 } from "@nextui-org/react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link, useParams } from "react-router-dom";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { FcDeleteDatabase } from "react-icons/fc";
-import { FcEditImage } from "react-icons/fc";
 import { useLocation } from "react-router-dom";
 import DeleteClassroomModal from "../components/ui/DeleteClassroomModal";
 import { PiCaretUpDownFill } from "react-icons/pi";
@@ -145,6 +141,7 @@ const ClassroomList = () => {
   const [classroomData, setClassroomData] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [open, setIsOpen] = useState(false);
+  const [selectedClassroom, setSelectedClassroom] = useState(null);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [archivedModal, setArchivedModal] = useState(false);
 
@@ -200,11 +197,11 @@ const ClassroomList = () => {
         (payload) => {
           const handleDelete = (payload) => {
             console.log("Deleted classroom:", payload.old);
-            setClassroomData((prevClassrooms) => [
-              ...prevClassrooms.filter(
+            setClassroomData((prevClassrooms) =>
+              prevClassrooms.filter(
                 (classroom) => classroom.id !== payload.old.id
-              ),
-            ]);
+              )
+            );
           };
 
           const handleInsert = (payload) => {
@@ -223,8 +220,6 @@ const ClassroomList = () => {
               )
             );
           };
-
-          // ...
 
           if (payload.eventType === "DELETE") {
             handleDelete(payload);
@@ -247,8 +242,14 @@ const ClassroomList = () => {
       setIsLoaded(true);
     }, 1000);
 
-    return () => clearTimeout(timer); // Cleanup timer on unmount
+    return () => clearTimeout(timer);
   }, []);
+
+  const handleDelete = (id) => {
+    setClassroomData((prevClassrooms) => {
+      return prevClassrooms.filter((classroom) => classroom.id !== id);
+    });
+  };
 
   return (
     <div className="w-full grid md:grid-cols-4 gap-4">
@@ -259,7 +260,7 @@ const ClassroomList = () => {
           className="flex flex-col justify-start items-start bg-white border border-zinc-500  gap-2 shadow-[6px_6px_0px_black] duration-300 ease-in"
         >
           <Link to={`/admin/classroom/${data.id}`} className="w-full">
-            <Skeleton className="w-fullh-[150px]" isLoaded={isLoaded}>
+            <Skeleton className="w-full h-[150px]" isLoaded={isLoaded}>
               <LazyLoadImage
                 className="w-full h-[150px] object-cover cursor-pointer"
                 src={data.headerImg}
@@ -308,7 +309,12 @@ const ClassroomList = () => {
                 <DropdownItem onClick={() => setArchivedModal(true)}>
                   Archived
                 </DropdownItem>
-                <DropdownItem onClick={() => setIsOpen(true)}>
+                <DropdownItem
+                  onClick={() => {
+                    setSelectedClassroom(data);
+                    setIsOpen(true);
+                  }}
+                >
                   Delete
                 </DropdownItem>
               </DropdownMenu>
@@ -318,12 +324,14 @@ const ClassroomList = () => {
           <UpdateModal
             openUpdateModal={openUpdateModal}
             setOpenUpdateModal={setOpenUpdateModal}
+            classroom={data}
           />
 
           <DeleteClassroomModal
             open={open}
             setIsOpen={setIsOpen}
-            deleteId={data.id}
+            classroom={selectedClassroom}
+            onDelete={handleDelete}
           />
           <ArchivedModal
             archivedModal={archivedModal}

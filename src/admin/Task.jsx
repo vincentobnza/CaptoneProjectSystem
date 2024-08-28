@@ -14,9 +14,10 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  button,
 } from "@nextui-org/react";
 import { BsFillLightningChargeFill } from "react-icons/bs";
-import { IoIosOpen } from "react-icons/io";
+import { LuDices } from "react-icons/lu";
 import { IoOpenOutline } from "react-icons/io5";
 import NoData from "../components/ui/NoData";
 import ActivityModal from "../components/admin_components/ActivityModal";
@@ -102,11 +103,15 @@ const PredefinedTasks = () => {
 
   return (
     <div className="w-full flex flex-col space-y-6 text-zinc-800">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-lg font-bold">System's Predefined Tasks</h1>
-        <p className="text-sm text-zinc-500">
-          Supplemental Activities in JavaScript
-        </p>
+      <div className="w-full flex justify-between items-center gap-2">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-lg font-bold">System's Predefined Tasks</h1>
+          <p className="text-sm text-zinc-500">
+            Supplemental Activities in JavaScript
+          </p>
+        </div>
+
+        <RandomTaskButton />
       </div>
 
       <div className="w-full grid md:grid-cols-4 gap-4">
@@ -177,5 +182,14 @@ const InstructorTask = () => {
         icon="https://cdn-icons-png.flaticon.com/128/7486/7486820.png"
       />
     </div>
+  );
+};
+
+const RandomTaskButton = () => {
+  return (
+    <button className="flex items-center gap-2 text-xs bg-yellow-200 text-black font-black py-2 px-3 border border-zinc-500 shadow-[4px_4px_0px_black] outline-none ">
+      Random Pick
+      <LuDices size={16} />
+    </button>
   );
 };

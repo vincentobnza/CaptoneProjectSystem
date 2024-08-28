@@ -4,12 +4,12 @@ import { Checkbox, cn } from "@nextui-org/react";
 import { IoClose } from "react-icons/io5";
 
 export default function EnablePolicy({ open, setOpen }) {
-  const PolicyList = [
+  const policyList = [
     {
       id: 1,
       title: "Student Awareness:",
       description:
-        " Enabling the leaderboard will make student scores visible in a ranked format. This may create competition among students and could lead to misunderstandings or confusion regarding their scores.",
+        "Enabling the leaderboard will make student scores visible in a ranked format. This may create competition among students and could lead to misunderstandings or confusion regarding their scores.",
     },
     {
       id: 2,
@@ -33,86 +33,84 @@ export default function EnablePolicy({ open, setOpen }) {
 
   const [disable, setDisable] = useState(true);
 
-  const handleTerms = () => {
-    if (!disable) {
-      setDisable(true);
-    } else {
-      setDisable(false);
-    }
+  const handleTerms = (value) => {
+    setDisable(!value);
   };
+
   return (
-    <>
-      <AnimatePresence>
-        {open && (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setOpen(false)}
+          className="fixed inset-0 bg-zinc-900/40 grid place-items-center z-[100] p-4"
+        >
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setOpen(false)}
-            className="fixed inset-0 bg-zinc-900/40 grid place-items-center z-[100] p-4"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-4xl h-[600px] bg-white p-8 rounded flex flex-col gap-2 justify-start items-start relative"
           >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
-              onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-4xl h-[600px] bg-white p-8 rounded flex flex-col gap-2 justify-start items-start space-y-2 activity relative"
-            >
-              <img
-                src="https://img.icons8.com/?size=48&id=d9blyrcKb0zb&format=png"
-                className="w-8"
-              />
-              <h1 className="font-bold text-lg">Terms and Policy</h1>
+            <img
+              src="https://img.icons8.com/?size=48&id=d9blyrcKb0zb&format=png"
+              className="w-8"
+              alt="Policy Icon"
+            />
+            <h1 className="font-bold text-lg">Terms and Policy</h1>
 
-              <div className="flex flex-col gap-2">
-                <p className="text-sm font-semibold">
-                  By enabling the "Leaderboards on Students" feature, you
-                  acknowledge and agree to the following:
-                </p>
-              </div>
+            <div className="flex flex-col gap-2">
+              <p className="text-sm font-semibold">
+                By enabling the "Leaderboards on Students" feature, you
+                acknowledge and agree to the following:
+              </p>
+            </div>
 
-              <ul className="flex flex-col gap-3 p-4">
-                {PolicyList.map((item) => (
-                  <li className="list-decimal text-sm">
-                    <span className="font-black">{item.title}</span>{" "}
-                    <span className="text-zinc-600">{item.description}</span>
-                  </li>
-                ))}
-              </ul>
+            <ul className="flex flex-col gap-3 p-4">
+              {policyList.map((item) => (
+                <li key={item.id} className="list-decimal text-sm">
+                  <span className="font-black px-2 bg-orange-50 text-orange-600 rounded">
+                    {item.title}
+                  </span>{" "}
+                  <span className="text-zinc-600">{item.description}</span>
+                </li>
+              ))}
+            </ul>
 
-              <div>
-                <h3 className="text-sm">
-                  Please check the box below to confirm that you have read and
-                  understood the terms and policy regarding the "Enable
-                  Leaderboards on Students" feature.
-                </h3>
-              </div>
-              <div>
-                <Checkbox
-                  onValueChange={handleTerms}
-                  color="success"
-                  classNames={{
-                    base: cn("text-xs"),
-                    label: "text-sm",
-                  }}
-                >
-                  I agree to the terms and policy.
-                </Checkbox>
-              </div>
-
-              <div className="absolute top-2 right-2 cursor-pointer">
-                <IoClose size={20} onClick={() => setOpen(false)} />
-              </div>
-              <button
-                disabled={disable}
-                className="self-end py-4 px-6 rounded-full bg-zinc-700 text-white text-xs font-bold disabled:bg-zinc-300 disabled:cursor-not-allowed"
+            <div>
+              <h3 className="text-sm">
+                Please check the box below to confirm that you have read and
+                understood the terms and policy regarding the "Enable
+                Leaderboards on Students" feature.
+              </h3>
+            </div>
+            <div className="mt-5">
+              <Checkbox
+                onValueChange={handleTerms}
+                color="success"
+                classNames={{
+                  base: cn("text-xs"),
+                  label: "text-sm",
+                }}
               >
-                I agree to the terms and policy
-              </button>
-            </motion.div>
+                I agree to the terms and policy.
+              </Checkbox>
+            </div>
+
+            <div className="absolute top-3 right-3 cursor-pointer">
+              <IoClose size={20} onClick={() => setOpen(false)} />
+            </div>
+            <button
+              disabled={disable}
+              className="self-end py-4 px-6 rounded-full bg-zinc-700 text-white text-xs font-bold disabled:bg-zinc-300 disabled:cursor-not-allowed hover:bg-white hover:border-zinc-600 hover:text-zinc-700 hover:border duration-500"
+            >
+              I agree to the terms and policy
+            </button>
           </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
