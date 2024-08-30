@@ -11,7 +11,7 @@ import { HiOutlineSelector } from "react-icons/hi";
 
 export default function Explore() {
   return (
-    <div className="w-full h-screen space-y-16 relative">
+    <div className="w-full h-screen bg-zinc-900 space-y-16 relative">
       <Navbar />
       <Content />
       <div
@@ -25,20 +25,20 @@ export default function Explore() {
 const Content = () => {
   const [open, setOpen] = React.useState(false);
   return (
-    <div className="w-full max-w-screen-lg mx-auto flex flex-col text-center text-zinc-700 relative">
+    <div className="w-full max-w-screen-lg mx-auto flex flex-col text-center text-zinc-200 relative">
       <div className="w-full flex flex-col justify-start items-center p-8">
-        <h1 className="text-4xl md:text-5xl font-bold">
-          Welcome To Your Learning Space
+        <h1 className="pointer-events-none z-10 whitespace-pre-wrap bg-gradient-to-b from-[#ffd319] via-[#ff2975] to-[#8c1eff] bg-clip-text text-4xl md:text-6xl font-bold leading-none tracking-tighter text-transparent">
+          Welcome to Room Space
         </h1>
-        <p className="mt-6 text-sm md:text-lg font-semibold text-zinc-700">
+        <p className="mt-6 text-sm md:text-sm font-medium text-zinc-400">
           Turn your ideas into reality with HTML, CSS, and JavaScript
         </p>
 
         <button
           onClick={() => setOpen(true)}
-          className="flex item-center justify-center gap-2 mt-20 self-center py-4 px-6 rounded-full bg-emerald-500 text-white text-md font-semibold shadow-2xl shadow-zinc-200"
+          className="flex item-center justify-center gap-2 mt-20 self-center py-4 px-6 rounded-full border border-zinc-800 text-zinc-200 text-md font-semibold "
         >
-          Join a class
+          Join a room
           <IoMdAdd size={20} />
         </button>
 

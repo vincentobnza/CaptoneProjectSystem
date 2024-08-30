@@ -17,7 +17,7 @@ export default function AdminTab() {
           tabList:
             "gap-6 w-full relative rounded-none p-0 border-b border-divider",
           cursor: "w-full bg-[#161616]",
-          tab: "max-w-fit px-0 h-12 text-xs font-semibold text-zinc-800",
+          tab: "max-w-fit px-0 h-12 text-xs font-medium text-zinc-800",
           tabContent: "group-data-[selected=true]:text-[#121212]",
         }}
       >

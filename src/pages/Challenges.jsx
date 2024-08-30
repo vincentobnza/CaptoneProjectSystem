@@ -10,7 +10,7 @@ import NoData from "../components/ui/NoData";
 
 export default function Challenges() {
   return (
-    <div className="w-full">
+    <div className="w-full bg-zinc-900">
       <Navbar />
       <div className="p-3 md:p-4 lg:p-6">
         <PointsBanner />
@@ -22,17 +22,19 @@ export default function Challenges() {
 
 const PointsBanner = () => {
   return (
-    <div className="relative mt-5 w-full max-w-screen-md p-8 mx-auto rounded-2xl  flex justify-between items-center text-zinc-800 bg-white border border-zinc-300 shadow-2xl shadow-zinc-100">
+    <div className="relative mt-5 w-full max-w-screen-md p-8 mx-auto rounded-2xl  flex justify-between items-center text-zinc-800 bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700 shadow-2xl">
       <div className="flex flex-col justify-start items-start text-left gap-3">
-        <h1 className="text-xl md:text-3xl font-semibold">LMS Assessments</h1>
-        <p className="text-xs font-semibold text-zinc-500">
+        <h1 className="text-xl md:text-3xl font-semibold text-zinc-200">
+          LMS Assessments
+        </h1>
+        <p className="text-xs font-semibold text-zinc-300">
           Gain and earn points by completing <br></br>assessments
         </p>
 
         <div className="flex mt-3">
           <Link
             to="/students-previlege"
-            className="p-2 rounded border border-zinc-200 text-xs font-medium text-zinc-700"
+            className="p-2 rounded bg-zinc-800 border border-zinc-700 text-xs font-medium text-zinc-300"
           >
             View Previlege
           </Link>
@@ -40,18 +42,20 @@ const PointsBanner = () => {
       </div>
 
       <div className="flex flex-col justify-end text-right gap-3">
-        <h1 className="text-7xl font-semibold text-emerald-600">0</h1>
-        <p className="text-sm font-semibold text-zinc-500">Current Points</p>
+        <h1 className="text-7xl font-semibold bg-gradient-to-br from-indigo-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">
+          0
+        </h1>
+        <p className="text-sm font-semibold text-zinc-200">Current Points</p>
       </div>
 
       <div className="hidden md:flex absolute -top-2 -left-10 -rotate-[30deg]">
-        <div className="w-32 h-8 rounded-full border border-zinc-200 bg-white z-10 flex justify-center items-center gap-2">
+        <div className="w-32 h-8 rounded-full border border-violet-500  text-indigo-200 bg-zinc-950/60 backdrop-blur-sm z-10 flex justify-center items-center gap-2">
           <p className="text-xs font-semibold">Happy Coding ! 🥳</p>
         </div>
       </div>
 
       <div className="absolute top-2 right-2">
-        <button className="text-xs p-2 text-zinc-600 border border-zinc-100 outline-none shadow-2xl shadow-zinc-300 rounded-md font-semibold flex items-start justify-center gap-2">
+        <button className="text-xs p-2 bg-zinc-800 text-zinc-200 border border-zinc-700 outline-none rounded-md font-semibold flex items-start justify-center gap-2">
           <IoMdRefresh size={15} />
           Refresh
         </button>
@@ -107,7 +111,9 @@ const PreviousChallenges = () => {
 const ChallengesForYou = () => {
   return (
     <div className="mt-8 w-full max-w-screen-md mx-auto flex flex-col space-y-6">
-      <h1 className="text-sm font-semibold">Assessments For You</h1>
+      <h1 className="text-sm font-semibold text-zinc-200">
+        Assessments For You
+      </h1>
 
       <NoData
         icon="https://cdn-icons-png.flaticon.com/128/7486/7486760.png"

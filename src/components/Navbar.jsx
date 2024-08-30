@@ -14,33 +14,27 @@ import {
 const Navbar = () => {
   const navItems = [
     { nav: "Home", link: "/", path: false },
-    { nav: "Learning Space", link: "/explore", path: true },
+    { nav: "Room", link: "/explore", path: true },
     { nav: "Assessments", link: "/qoutes", path: true },
     { nav: "Students Hub", link: "/community", path: true },
-    { nav: "About Us", link: "/about", path: false },
-    { nav: "Developers", link: "/team-developers", path: false },
   ];
 
   const { isLoaded, isSignedIn } = useAuth();
 
   return (
-    <nav className="border-b border-zinc-100 bg-white grid place-items-center p-3 sticky top-0 left-0  z-30">
-      <div className="w-full flex max-w-screen-xl mx-auto justify-between items-center relative">
+    <nav className="bg-zinc-900 grid place-items-center p-5">
+      <div className="w-full flex max-w-screen-lg mx-auto justify-between items-center relative">
         <Link
           to="/"
-          className="flex justify-start items-center gap-2 font-bold"
+          className="flex justify-start items-center gap-6 font-bold text-zinc-200 text-sm"
         >
-          <img src={Logo} className="w-8" />
-          Code Brain
+          {"{ Codecian }"}
         </Link>
-        <ul className="hidden md:flex items-center gap-1 text-xs font-bold text-zinc-700">
+        <ul className="hidden md:flex items-center gap-4 text-xs tracking-wide font-semibold bg-zinc-800/40 backdrop-blur-lg border border-zinc-700 text-zinc-400 py-2 px-6 rounded-lg  fixed top-3 left-1/2 transform -translate-x-1/2 z-50 shadow">
           {navItems.map((item, index) => (
-            <li
-              key={index}
-              className="p-2 rounded hover:bg-emerald-50 hover:text-emerald-600 duration-500"
-            >
+            <li key={index} className="p-1 duration-500 hover:text-white ">
               {isSignedIn || item.path === false ? (
-                <Link to={item.link} className="px-2  ">
+                <Link to={item.link} className="px-2 duration-400">
                   {item.nav}
                 </Link>
               ) : (
@@ -66,14 +60,8 @@ const Navbar = () => {
                 <UserButton />
               ) : (
                 <>
-                  <SignUpButton mode="modal">
-                    <button className="p-3 text-zinc-600 hover:text-zinc-700 outline-none text-xs font-bold">
-                      Sign up
-                    </button>
-                  </SignUpButton>
                   <SignInButton mode="modal">
-                    <button className="flex items-center gap-1 p-2  border rounded border-zinc-200 text-zinc-600 transition ease-in-out duration-300 outline-none text-xs font-bold">
-                      <CiLogin size={20} />
+                    <button className="flex items-center gap-1 px-6 py-2  bg-violet-600 hover:bg-white hover:text-black rounded-full text-white transition ease-in-out duration-500 outline-none text-sm font-bold">
                       Login
                     </button>
                   </SignInButton>

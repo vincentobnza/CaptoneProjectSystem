@@ -85,7 +85,7 @@ const Content = () => {
       value: 10,
       icon: PiStudentBold,
       description: "Total Students",
-      color: "bg-gradient-to-b from-indigo-600 to-purple-600 text-white",
+      color: "bg-gradient-to-b from-indigo-600 to-blue-500 text-white",
     },
     {
       value: 100,
@@ -97,7 +97,7 @@ const Content = () => {
       value: 1,
       icon: FaUsers,
       description: "Online Users",
-      color: "bg-gradient-to-b from-blue-600 to-indigo-600 text-white",
+      color: "bg-gradient-to-b from-blue-600 to-sky-600 text-white",
     },
     {
       value: classroomCount,
@@ -112,33 +112,31 @@ const Content = () => {
         <h1 className="text-md font-medium">{greetings}</h1>
       </Skeleton>
 
-      <div className="mt-6 w-full grid md:grid-cols-4 gap-3">
+      <div className="mt-6 w-full grid md:grid-cols-4 gap-4">
         <AnimatePresence>
           {boxInfo.map((item, idx) => (
             <motion.div
               key={idx}
-              className={`w-full h-[130px] p-6 flex items-center justify-center flex-col gap-2 ${item.color} rounded-2xl shadow-[6px_6px_0px_black] hover:shadow-[8px_8px_0px_black] duration-500 relative overflow-hidden`}
+              className={`w-full h-[130px] p-6 flex items-center justify-center flex-col gap-2 rounded-2xl duration-500 relative overflow-hidden ${item.color} shadow-[5px_5px_0px_black]`}
             >
-              <item.icon
-                size={55}
-                className="absolute bottom-1 right-1 text-white opacity-30 "
-              />
-              <div className="w-full flex items-center gap-4">
+              <div className="w-full flex justify-start items-start gap-6">
                 <Skeleton isLoaded={loaded} className="rounded-full">
-                  <div className="size-10 border-2 border-white grid place-items-center rounded-full text-white">
-                    <item.icon size={25} />
+                  <div
+                    className={`size-10 grid place-items-center rounded-full bg-gradient-to-b from-white to-zinc-300 text-black`}
+                  >
+                    <item.icon size={20} />
                   </div>
                 </Skeleton>
-                <div className="flex flex-col gap-2 p-2 text-white">
+                <div className="flex flex-col gap-2 text-white">
                   <Skeleton className="rounded-lg" isLoaded={loaded}>
-                    <p className="text-sm text-white font-semibold">
+                    <p className="text-sm text-white font-black">
                       {item.description}
                     </p>
                   </Skeleton>
-                  <div className="flex items-start">
+                  <div className="flex items-start ">
                     <Skeleton className="rounded-lg" isLoaded={loaded}>
                       <div className="w-32">
-                        <h1 className="text-2xl font-bold text-white">
+                        <h1 className="text-3xl font-black text-white">
                           {item.value}
                         </h1>
                       </div>
@@ -165,7 +163,7 @@ const ListData = () => {
     <div className="mt-10 w-full flex flex-col gap-2 justify-start items-start p-2 text-zinc-900">
       <div className="w-full flex justify-between">
         <Skeleton className="rounded-lg" isLoaded={loaded}>
-          <h1 className="text-md font-medium">Active Students</h1>
+          <h1 className="text-md font-black">Active Students</h1>
         </Skeleton>
 
         <Skeleton className="rounded-lg" isLoaded={loaded}>
@@ -174,7 +172,7 @@ const ListData = () => {
               <div className="flex gap-2">
                 <button
                   className="flex items-center
-         gap-2 text-xs font-bold py-2 px-3  border border-zinc-500 shadow-[4px_4px_0px_black] "
+         gap-2 text-xs font-bold py-3 px-3 bg-gradient-to-br from-white to-zinc-100 border border-zinc-500 shadow-[4px_4px_0px_black] rounded-lg"
                 >
                   Filter Students
                   <PiCaretUpDownFill size={15} />
@@ -186,7 +184,7 @@ const ListData = () => {
               <DropdownItem>1st Year</DropdownItem>
               <DropdownItem>2nd Year</DropdownItem>
             </DropdownMenu>
-          </Dropdown>   
+          </Dropdown>
         </Skeleton>
       </div>
 

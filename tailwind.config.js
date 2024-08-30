@@ -10,9 +10,17 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        Nunito: ["Nunito", "sans-serif"],
         SpaceGrotesk: ["Space Grotesk", "sans-serif"],
-        Mulish: ["Mulish", "sans-serif"],
+        Manrope: ["Manrope", "sans-serif"],
+      },
+      animation: {
+        grid: "grid 15s linear infinite",
+      },
+      keyframes: {
+        grid: {
+          "0%": { transform: "translateY(-50%)" },
+          "100%": { transform: "translateY(0)" },
+        },
       },
     },
   },

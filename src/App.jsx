@@ -13,7 +13,6 @@ const IntermediateLevel = lazy(() => import("./pages/IntermediateLevel"));
 const AdvancedLevel = lazy(() => import("./pages/AdvancedLevel"));
 const NotFound = lazy(() => import("./pages/404"));
 const Previlege = lazy(() => import("./pages/Previlege"));
-const Admin_Login = lazy(() => import("./admin/Admin_Login"));
 const AdminResources = lazy(() => import("./admin/AdminResources"));
 import Dashboard from "./admin/Dashboard";
 import Students from "./admin/Students";
@@ -28,10 +27,10 @@ import ClassroomStudents from "./admin/ClassroomStudents";
 import Leaderboards from "./admin/Leaderboards";
 import ArchivedRooms from "./admin/ArchivedRooms";
 const QuizPreview = lazy(() => import("./pages/QuizPreview"));
-
+import Login from "./admin/admin_auth/Login";
 function App() {
   return (
-    <div className="App font-SpaceGrotesk text-zinc-950 bg-white font-medium">
+    <div className="App font-SpaceGrotesk text-zinc-950 bg-white">
       <Suspense fallback={<Loading />}>
         <Routes>
           {/* Public routes */}
@@ -50,10 +49,10 @@ function App() {
           <Route path="/qoutes" element={<LoadingQoutes />} />
           <Route path="/students-previlege" element={<Previlege />} />
           <Route path="/quiz-preview" element={<QuizPreview />} />
-
           {/* Admin routes */}
+
+          <Route path="/admin/login" element={<Login />} />
           <Route path="/admin/*" element={<AdminLayout />}>
-            <Route path="login" element={<Admin_Login />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="resources" element={<AdminResources />} />
             <Route path="manage-students" element={<Students />} />

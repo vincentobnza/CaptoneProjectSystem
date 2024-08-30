@@ -78,7 +78,7 @@ const Content = () => {
           <div className="flex items-center gap-2">
             <Dropdown backdrop="blur" className="font-SpaceGrotesk" showArrow>
               <DropdownTrigger>
-                <button className="flex item-center justify-center gap-2 text-xs font-medium outline-none bg-white border border-zinc-500 shadow-[4px_4px_0px_black] py-2 px-4 text-zinc-700">
+                <button className="flex item-center justify-center gap-2 text-xs font-medium outline-none bg-white border border-zinc-500 shadow-[4px_4px_0px_black] rounded-lg py-3 px-4 text-zinc-700">
                   Filter Classroms
                   <PiCaretUpDownFill size={15} />
                 </button>
@@ -95,7 +95,7 @@ const Content = () => {
             </Dropdown>
             <button
               onClick={() => setIsOpen(true)}
-              className="flex item-center justify-center gap-2 text-xs font-medium outline-none border border-indigo-600  bg-indigo-600 text-white shadow-[4px_4px_0px_black] py-2 px-4"
+              className="flex item-center justify-center gap-2 text-xs font-medium outline-none border border-indigo-600 bg-indigo-600 text-white py-3 px-4 rounded-lg shadow-[4px_4px_0px_black]"
             >
               Create new
               <IoAdd size={15} />
@@ -257,12 +257,15 @@ const ClassroomList = () => {
         <div
           draggable="true"
           key={data.id}
-          className="flex flex-col justify-start items-start bg-white border border-zinc-500  gap-2 shadow-[6px_6px_0px_black] duration-300 ease-in"
+          className="flex flex-col justify-start items-start bg-gradient-to-b from-white to-zinc-100 border border-zinc-500 gap-2 duration-300 ease-in shadow-[5px_5px_0px_black] rounded-2xl"
         >
           <Link to={`/admin/classroom/${data.id}`} className="w-full">
-            <Skeleton className="w-full h-[150px]" isLoaded={isLoaded}>
+            <Skeleton
+              className="w-full h-[150px] rounded-tr-2xl rounded-tl-2xl"
+              isLoaded={isLoaded}
+            >
               <LazyLoadImage
-                className="w-full h-[150px] object-cover cursor-pointer"
+                className="w-full h-[150px] object-cover cursor-pointer rounded-tr-2xl rounded-tl-2xl"
                 src={data.headerImg}
               />
             </Skeleton>

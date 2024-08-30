@@ -104,7 +104,7 @@ const HeaderBg = ({ classCode, classroomName, section }) => {
       <div className="flex flex-col gap-2 h-full p-3">
         <h1 className="text-xs font-semibold text-zinc-300">{formattedDate}</h1>
         <h1 className="text-4xl font-bold text-white">{classroomName}</h1>
-        <div className="mt-3 self-start px-3 py-1 bg-zinc-900/40 backdrop-blur border border-zinc-600 rounded-lg">
+        <div className="text-sm font-semibold text-zinc-300 tracking-wide mt-3 self-start px-3 py-1 bg-zinc-900/40 backdrop-blur border border-zinc-600 rounded-lg">
           <p>Section {section}</p>
         </div>
       </div>
