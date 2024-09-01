@@ -11,16 +11,6 @@ export default {
     extend: {
       fontFamily: {
         SpaceGrotesk: ["Space Grotesk", "sans-serif"],
-        Manrope: ["Manrope", "sans-serif"],
-      },
-      animation: {
-        grid: "grid 15s linear infinite",
-      },
-      keyframes: {
-        grid: {
-          "0%": { transform: "translateY(-50%)" },
-          "100%": { transform: "translateY(0)" },
-        },
       },
     },
   },

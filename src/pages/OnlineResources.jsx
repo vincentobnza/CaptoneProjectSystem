@@ -55,7 +55,7 @@ const Content = () => {
       <div className="mt-5">
         <Divider className="my-4" />
         <div className="flex h-5 items-center space-x-4 text-small">
-          <Link to="/classroom" className="text-zinc-300">
+          <Link to="/room" className="text-zinc-300">
             Your Classroom
           </Link>
           <Divider orientation="vertical" />

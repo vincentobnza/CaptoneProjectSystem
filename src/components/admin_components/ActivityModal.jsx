@@ -3,16 +3,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Switch, DatePicker } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import { IoCaretBack } from "react-icons/io5";
-import {
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-  DropdownTrigger,
-} from "@nextui-org/react";
-import { RxCaretDown } from "react-icons/rx";
+import { Select, SelectItem } from "@nextui-org/react";
 
-import { IoTimerSharp } from "react-icons/io5";
-import { MdOutlineDateRange } from "react-icons/md";
+import { now, getLocalTimeZone, parseDate } from "@internationalized/date";
+import { useDateFormatter } from "@react-aria/i18n";
 
 export default function ActivityModal({ open, setOpen, task }) {
   const [isSelected, setIsSelected] = useState(false);
@@ -84,7 +78,7 @@ export default function ActivityModal({ open, setOpen, task }) {
                 disabled={true}
                 className="px-6 py-2 bg-indigo-600 text-sm font-bold text-white  disabled:cursor-not-allowed shadow-[4px_4px_0px_black]"
               >
-                Send
+                Distribute
               </button>
             </div>
             <div className="w-full h-screen flex gap-1 p-6">
@@ -108,19 +102,7 @@ export default function ActivityModal({ open, setOpen, task }) {
                         {task.deliverables}
                       </p>
                     </div>
-                    {/* <div className="grid md:grid-cols-2 gap-2 items-center">
-                      <div className="flex flex-col gap-2">
-                        <h1 className="font-semibold">
-                          Pick an exact deadline
-                        </h1>
-                        <DatePicker
-                          showMonthAndYearPickers
-                          isRequired
-                          label="Submission deadline"
-                          className="w-full border border-zinc-200 rounded-xl"
-                        />
-                      </div>
-                    </div> */}
+
                     <div className="w-full p-3 bg-yellow-50 border-l-2 border-yellow-500">
                       <p className="text-sm font-semibold">{task.help}</p>
                     </div>
@@ -188,35 +170,7 @@ export default function ActivityModal({ open, setOpen, task }) {
                     )}
                   </AnimatePresence>
                   <div>
-                    <Dropdown>
-                      <DropdownTrigger>
-                        <button className="flex items-center gap-2 px-3 py-2 border border-zinc-200 text-sm font-semibold outline-none">
-                          Submission Options
-                          <RxCaretDown size={20} />
-                        </button>
-                      </DropdownTrigger>
-                      <DropdownMenu aria-label="Static Actions">
-                        <DropdownItem
-                          endContent={
-                            <IoTimerSharp size={20} className="text-zinc-500" />
-                          }
-                          key="new"
-                        >
-                          Timer
-                        </DropdownItem>
-                        <DropdownItem
-                          endContent={
-                            <MdOutlineDateRange
-                              size={20}
-                              className="text-zinc-500"
-                            />
-                          }
-                          key="copy"
-                        >
-                          Deadline
-                        </DropdownItem>
-                      </DropdownMenu>
-                    </Dropdown>
+                    <Deadline />
                   </div>
                 </div>
               </div>
@@ -227,3 +181,24 @@ export default function ActivityModal({ open, setOpen, task }) {
     </AnimatePresence>
   );
 }
+
+const Deadline = () => {
+  const [value, setValue] = useState(now(getLocalTimeZone()));
+
+  let formatter = useDateFormatter({ dateStyle: "full" });
+
+  return (
+    <div className="mt-3 w-full max-w-xl flex flex-col gap-2">
+      <h1 className="text-sm font-semibold text-zinc-500">Set a due</h1>
+      <DatePicker
+        value={value}
+        onChange={setValue}
+        label="Chooose your deadline"
+        variant="underlined"
+        hideTimeZone
+        showMonthAndYearPickers
+        defaultValue={now(getLocalTimeZone())}
+      />
+    </div>
+  );
+};

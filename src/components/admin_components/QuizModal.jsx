@@ -6,8 +6,10 @@ import { IoMdAdd } from "react-icons/io";
 import { Button, Tooltip } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import { VscOpenPreview } from "react-icons/vsc";
-import QuizPreview from "../pages/QuizPreview";
-export default function QuizModal({ quiz, setQuiz }) {
+import QuizPreview from "../../pages/QuizPreview";
+import { MdDriveFolderUpload } from "react-icons/md";
+
+const QuizModal = ({ quiz, setQuiz }) => {
   const [questions, setQuestions] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -187,9 +189,35 @@ export default function QuizModal({ quiz, setQuiz }) {
                 Add Question
               </Button>
             </div>
+
+            <UploadFile />
           </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
   );
-}
+};
+
+const UploadFile = () => {
+  return (
+    <div className="w-full p-8 flex flex-col gap-2">
+      <h1 className="text-sm font-semibold">Or Upload a quiz file</h1>
+
+      <div className="mt-5">
+        <div className="p-8 border-2 border-dashed border-zinc-300 grid place-items-center">
+          <div className="flex text-center justify-center items-center flex-col gap-4 cursor-pointer">
+            <MdDriveFolderUpload size={20} id="upload" />
+            <label
+              htmlFor="upload"
+              className="text-xs font-medium text-zinc-500"
+            >
+              Upload file
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default QuizModal;

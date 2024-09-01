@@ -9,6 +9,8 @@ import Switch from "../components/admin_components/Switch";
 import VideoIcon from "../icons/video.png";
 import BookIcon from "../icons/books.png";
 
+import VideoMaterials from "../components/admin_components/VideoMaterials";
+
 import Header from "../components/admin_components/Header";
 import { HiSelector } from "react-icons/hi";
 import {
@@ -55,6 +57,7 @@ const Content = () => {
 };
 
 const CreateButton = () => {
+  const [videoMaterial, setVideoMaterial] = useState(false);
   return (
     <div>
       <Dropdown showArrow className="p-2 font-SpaceGrotesk" backdrop="blur">
@@ -66,6 +69,7 @@ const CreateButton = () => {
         </DropdownTrigger>
         <DropdownMenu variant="faded" aria-label="Static Actions">
           <DropdownItem
+            onClick={() => setVideoMaterial(true)}
             key="new"
             startContent={<img src={VideoIcon} className="w-5" />}
           >
@@ -79,6 +83,11 @@ const CreateButton = () => {
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
+
+      <VideoMaterials
+        videoMaterial={videoMaterial}
+        setVideoMaterial={setVideoMaterial}
+      />
     </div>
   );
 };

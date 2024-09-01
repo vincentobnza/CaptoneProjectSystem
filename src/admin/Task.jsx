@@ -22,6 +22,7 @@ import { IoOpenOutline } from "react-icons/io5";
 import NoData from "../components/ui/NoData";
 import ActivityModal from "../components/admin_components/ActivityModal";
 import { PredefinedTask } from "../task/PredefinedTask";
+import QuizModal from "../components/admin_components/QuizModal";
 
 export default function Task() {
   return (
@@ -58,6 +59,7 @@ const Content = () => {
 };
 
 const CreateButton = () => {
+  const [quiz, setQuiz] = useState(false);
   return (
     <div>
       <Dropdown showArrow backdrop="blur" className="p-2 font-SpaceGrotesk">
@@ -69,17 +71,13 @@ const CreateButton = () => {
         </DropdownTrigger>
         <DropdownMenu variant="faded" aria-label="Static Actions">
           <DropdownItem
+            onClick={() => setQuiz(!quiz)}
             key="quiz"
             startContent={<img src={Quiz} className="w-5" />}
           >
             Quizzes
           </DropdownItem>
-          <DropdownItem
-            key="assignment"
-            startContent={<img src={Assignment} className="w-5" />}
-          >
-            Assignments
-          </DropdownItem>
+
           <DropdownItem
             key="code"
             startContent={<img src={Code} className="w-5" />}
@@ -88,6 +86,8 @@ const CreateButton = () => {
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
+
+      <QuizModal quiz={quiz} setQuiz={setQuiz} />
     </div>
   );
 };
