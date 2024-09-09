@@ -6,55 +6,53 @@ import AdminLayout from "./layout/AdminLayout"; // Import your layout
 // Lazy loaded components
 const Home = lazy(() => import("./pages/Home"));
 const Explore = lazy(() => import("./pages/Explore"));
-const Room = lazy(() => import("./pages/Classroom"));
 const Challenges = lazy(() => import("./pages/Challenges"));
-const BasicLevelHTML = lazy(() => import("./pages/BasicLevelHTML"));
-const BasicLevelCSS = lazy(() => import("./pages/BasicLevelCSS"));
-const IntermediateLevel = lazy(() => import("./pages/IntermediateLevel"));
-const AdvancedLevel = lazy(() => import("./pages/AdvancedLevel"));
 const NotFound = lazy(() => import("./pages/404"));
 const Previlege = lazy(() => import("./pages/Previlege"));
 const AdminResources = lazy(() => import("./admin/AdminResources"));
 import Dashboard from "./admin/Dashboard";
 import Students from "./admin/Students";
 const LoadingQoutes = lazy(() => import("./pages/LoadingQoutes"));
-const OnlineResources = lazy(() => import("./pages/OnlineResources"));
 import AdminClassroom from "./admin/Classroom";
-import Classroom from "./admin/Classroom";
 import ClassroomDetails from "./admin/ClassroomDetails";
 import CreateContent from "./admin/CreateContent";
 import Task from "./admin/Task";
 import ClassroomStudents from "./admin/ClassroomStudents";
 import Leaderboards from "./admin/Leaderboards";
 import ArchivedRooms from "./admin/ArchivedRooms";
-const QuizPreview = lazy(() => import("./pages/QuizPreview"));
 import Settings from "./pages/Settings";
 import SetupProfile from "./pages/SetupProfile";
+import CodeEditor from "./pages/CodeEditor";
+import Developers from "./pages/Developers";
+
+//STUDENT
+import StudentDashboard from "./pages/StudentDashboard";
+import Module from "./pages/Modules";
+import Learning from "./pages/Learning";
+import PlayGame from "./pages/PlayGame";
 
 import ProtectedRoute from "./private/ProtectedRoute";
 import Login from "./auth/Login";
 import Signup from "./auth/Signup";
-import { AuthProvider } from "./hooks/AuthContext";
-import { NextUIProvider } from "@nextui-org/react";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
+
+// CONTENT
+const BasicHTML = lazy(() => import("./content/BasicHTML"));
+const BasicCSS = lazy(() => import("./content/BasicCSS"));
+const BasicJS = lazy(() => import("./content/BasicJS"));
+
+const Html_Quiz = lazy(() => import("./quizzes/Html_Quiz"));
+const Css_Quiz = lazy(() => import("./quizzes/Css_Quiz"));
+
 function App() {
   return (
-    <div className="App font-SpaceGrotesk text-zinc-950 bg-white">
+    <div className="App font-Manrope text-zinc-950 bg-white">
       <Suspense fallback={<Loading />}>
         <Routes>
           {/* Public routes */}
-          <Route
-            path="/"
-            element={
-              <NextUIProvider>
-                <NextThemesProvider attribute="class" defaultTheme="dark">
-                  <Home />
-                </NextThemesProvider>
-              </NextUIProvider>
-            }
-          />
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/developers" element={<Developers />} />
 
           <Route
             path="/explore"
@@ -64,7 +62,90 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/student-dashboard/learnings"
+            element={
+              <ProtectedRoute>
+                <Learning />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/student-dashboard/school-modules"
+            element={
+              <ProtectedRoute>
+                <Module />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/codecian-editor"
+            element={
+              <ProtectedRoute>
+                <CodeEditor />
+              </ProtectedRoute>
+            }
+          />
 
+          <Route
+            path="/student-dashboard"
+            element={
+              <ProtectedRoute>
+                <StudentDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/play-game"
+            element={
+              <ProtectedRoute>
+                <PlayGame />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* CONTENT  OF THE WEBSITE*/}
+          <Route
+            path="/basic-html"
+            element={
+              <ProtectedRoute>
+                <BasicHTML />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/basic-css"
+            element={
+              <ProtectedRoute>
+                <BasicCSS />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/basic-javascript"
+            element={
+              <ProtectedRoute>
+                <BasicJS />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/html-quiz:id"
+            element={
+              <ProtectedRoute>
+                <Html_Quiz />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/css-quiz/:topic"
+            element={
+              <ProtectedRoute>
+                <Css_Quiz />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/setup-profile"
             element={
@@ -82,27 +163,12 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/room/:id"
-            element={
-              <ProtectedRoute>
-                <Room />
-              </ProtectedRoute>
-            }
-          />
+
           <Route
             path="/assessments"
             element={
               <ProtectedRoute>
                 <Challenges />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/online-resources"
-            element={
-              <ProtectedRoute>
-                <OnlineResources />
               </ProtectedRoute>
             }
           />
@@ -124,14 +190,6 @@ function App() {
             }
           />
 
-          <Route
-            path="/quiz-preview"
-            element={
-              <ProtectedRoute>
-                <QuizPreview />
-              </ProtectedRoute>
-            }
-          />
           {/* Admin routes */}
 
           <Route path="/admin/*" element={<AdminLayout />}>

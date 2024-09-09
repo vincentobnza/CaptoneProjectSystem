@@ -28,7 +28,7 @@ export default function AdminNavbar() {
               className="flex items-center
          gap-2 text-xs font-bold py-2 px-3  "
             >
-              <img src={Teacher} className="w-6 rounded-full" />
+              <img src={Teacher} className="w-6 rounded-full" alt="teacher" />
               Instructor Mode
               <IoCaretDownSharp className="text-zinc-500" />
             </button>

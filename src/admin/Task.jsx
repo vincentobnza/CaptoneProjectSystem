@@ -22,7 +22,6 @@ import { IoOpenOutline } from "react-icons/io5";
 import NoData from "../components/ui/NoData";
 import ActivityModal from "../components/admin_components/ActivityModal";
 import { PredefinedTask } from "../task/PredefinedTask";
-import QuizModal from "../components/admin_components/QuizModal";
 
 export default function Task() {
   return (
@@ -86,8 +85,6 @@ const CreateButton = () => {
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
-
-      <QuizModal quiz={quiz} setQuiz={setQuiz} />
     </div>
   );
 };

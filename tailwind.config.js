@@ -8,9 +8,10 @@ export default {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    darkMode: "class",
     extend: {
       fontFamily: {
-        SpaceGrotesk: ["Space Grotesk", "sans-serif"],
+        Manrope: ["Manrope", "sans-serif"],
       },
     },
   },

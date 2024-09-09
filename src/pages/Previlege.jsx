@@ -25,6 +25,7 @@ export default function Previlege() {
         <img
           src="http://images.unsplash.com/photo-1605379399642-870262d3d051?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMjA3fDB8MXxzZWFyY2h8Mnx8cHJvZ3JhbW1pbmd8fDB8fHx8MTYzMTQ4MTI5Mw&ixlib=rb-1.2.1&q=80&w=1080"
           className="w-full rounded-lg mb-5"
+          alt=""
         />
         <h1 className="text-lg font-semibold">
           Privilege Note 📝 : Integration of LMS Assessment Points into

@@ -23,16 +23,6 @@ export default function Sidebar({ active }) {
       link: "/admin/dashboard",
       icon: Dashboard,
     },
-    {
-      item: "Rooms",
-      link: "/admin/admin-create-classroom",
-      icon: Classroom,
-    },
-    {
-      item: "Archived Rooms",
-      link: "/admin/archived-rooms",
-      icon: RoomIcon,
-    },
 
     {
       item: "Students",
@@ -50,7 +40,7 @@ export default function Sidebar({ active }) {
   return (
     <div className="hidden fixed top-0 left-0 bg-white w-[240px] border-r border-zinc-100 h-full md:flex flex-col text-center p-5 z-[80] shadow-2xl shadow-zinc-100">
       <div className="w-[90%] self-center flex items-center justify-start gap-4">
-        <img src={AdminLogo} className="w-8 self-center" />
+        <img src={AdminLogo} className="w-8 self-center" alt="" />
         <h1 className="text-sm font-bold">Admin Panel</h1>
       </div>
       <ul className="flex flex-col gap-1 mt-[4rem]">
@@ -66,12 +56,12 @@ export default function Sidebar({ active }) {
             >
               {active === item.link && (
                 <div>
-                  <img src={item.icon} className="size-6" />
+                  <img src={item.icon} className="size-6" alt="" />
                 </div>
               )}
               {active !== item.link && (
                 <div>
-                  <img src={item.icon} className="size-6 grayscale" />
+                  <img src={item.icon} className="size-6 grayscale" alt="" />
                 </div>
               )}
               <div className="ml-2 font-bold">{item.item}</div>
