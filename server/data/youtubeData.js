@@ -31,14 +31,6 @@ const youtubeData = [
       "https://wallpaperbat.com/img/413244-the-golden-age-of-javascript.png",
     link: "https://www.youtube.com/watch?v=NCwa_xi0Uuc",
   },
-  {
-    id: 5,
-    title: "Modern Javascript Essentials",
-    duration: "1 hour",
-    image:
-      "https://wallpaperbat.com/img/413244-the-golden-age-of-javascript.png",
-    link: "https://www.youtube.com/watch?v=NCwa_xi0Uuc",
-  },
 ];
 
 module.exports = youtubeData;

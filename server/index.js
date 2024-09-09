@@ -7,6 +7,8 @@ const morgan = require("morgan");
 const path = require("path");
 
 const youtubeData = require("./data/youtubeData");
+const basicHTMLData = require("./data/basic-html");
+const basicCSSData = require("./data/css_data");
 
 dotenv.config();
 
@@ -31,6 +33,23 @@ app.set("json spaces", 2);
 app.get("/api/youtube-video-data", (req, res) => {
   try {
     res.json(youtubeData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+app.get("/api/basic-html", (req, res) => {
+  try {
+    res.json(basicHTMLData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+app.get("/api/basic-css", (req, res) => {
+  try {
+    res.json(basicCSSData);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
