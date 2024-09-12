@@ -9,6 +9,7 @@ const path = require("path");
 const youtubeData = require("./data/youtubeData");
 const basicHTMLData = require("./data/basic-html");
 const basicCSSData = require("./data/css_data");
+const GameData = require("./data/GameData");
 
 dotenv.config();
 
@@ -50,6 +51,15 @@ app.get("/api/basic-html", (req, res) => {
 app.get("/api/basic-css", (req, res) => {
   try {
     res.json(basicCSSData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+app.get("/api/game-data", (req, res) => {
+  try {
+    res.json(GameData);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
