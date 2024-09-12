@@ -22,7 +22,7 @@ const Navbar = () => {
     { nav: "Home", link: "/", path: false },
     { nav: "Learning Space", link: "/explore", path: true },
     { nav: "Leaderboards", link: "/qoutes", path: true },
-    { nav: "Students Hub", link: "/community", path: true },
+    // { nav: "Students Hub", link: "/hub", path: true },
     { nav: "Developers", link: "/developers", path: true },
   ];
 
@@ -40,7 +40,7 @@ const Navbar = () => {
         >
           {"{ Codecian }"}
         </Link>
-        <ul className="hidden md:flex items-center gap-2 text-[12px] tracking-wide py-2 px-6 text-xs  font-bold text-zinc-700">
+        <ul className="hidden md:flex items-center gap-2 text-[12px] tracking-wide py-2 px-6 text-xs text-zinc-700">
           {navItems.map((item, index) => (
             <li
               key={index}
@@ -57,7 +57,7 @@ const Navbar = () => {
           <div className="flex items-center gap-6">
             {user ? (
               // Profile Default is Cat hehehe
-              <Dropdown placement="bottom-end" className="text-xs font-Manrope">
+              <Dropdown placement="bottom-end" className="text-xs font-sans">
                 <DropdownTrigger>
                   <div className="size-8 shadow-[-2px_2px_0px_black] hover:translate-y-[-4px] hover:shadow-[-4px_4px_0px_black] grid place-items-center border border-zinc-700 overflow-hidden cursor-pointer hover:opacity-70 duration-400 outline-none">
                     <img

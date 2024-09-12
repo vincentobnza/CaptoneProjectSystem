@@ -4,9 +4,7 @@ import AdminNavbar from "../components/AdminNavbar";
 import { PiStudentBold } from "react-icons/pi";
 import { GrResources } from "react-icons/gr";
 import { FaUsers } from "react-icons/fa6";
-import { Select, SelectItem } from "@nextui-org/react";
 import { Skeleton } from "@nextui-org/react";
-import { SiGoogleclassroom } from "react-icons/si";
 import supabase from "../config/supabaseClient";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -45,34 +43,40 @@ export default function Dashboard() {
 
 const Content = () => {
   const currentHour = new Date().getHours();
+  const [loaded, setLoaded] = useState(false);
+  const [userCount, setUserCount] = useState(0);
+
   let greetings;
-  const [loaded, isLoaded] = React.useState(false);
-  const [classroomCount, setClassroomCount] = useState(0);
-
-  setTimeout(() => {
-    isLoaded(true);
-  }, 2000);
-
   if (currentHour >= 5 && currentHour < 12) {
     greetings = "Good Morning 🌞";
   } else if (currentHour >= 12 && currentHour < 18) {
     greetings = "Good Afternoon 🌤️";
   } else if (currentHour >= 18 && currentHour < 22) {
     greetings = "Good Evening 🌛";
+  } else {
+    greetings = "Good Night 🌙";
   }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoaded(true);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const countData = async () => {
       try {
-        const { count, error: countError } = await supabase
-          .from("classrooms")
-          .select("*", { count: "exact" });
+        const { count, error } = await supabase
+          .from("profile")
+          .select("*", { count: "exact", head: true });
 
-        if (countError) {
-          console.log(countError);
+        if (error) {
+          console.log(error);
           return;
         }
-        setClassroomCount(count);
+        setUserCount(count);
       } catch (error) {
         console.log(error);
       }
@@ -82,61 +86,54 @@ const Content = () => {
 
   const boxInfo = [
     {
-      value: 10,
+      value: userCount,
       icon: PiStudentBold,
-      description: "Total Students",
-      color: "bg-gradient-to-b from-indigo-600 to-blue-500 text-white",
+      description: "Total Users",
+      color: "bg-orange-100 text-orange-600",
     },
     {
-      value: 100,
+      value: 0,
       icon: GrResources,
       description: "Total Resources",
-      color: "bg-gradient-to-b from-emerald-600 to-green-500 text-white",
+      color: "bg-emerald-100 text-emerald-600",
     },
     {
-      value: 1,
+      value: 0,
       icon: FaUsers,
       description: "Online Users",
-      color: "bg-gradient-to-b from-blue-600 to-sky-600 text-white",
-    },
-    {
-      value: classroomCount,
-      icon: SiGoogleclassroom,
-      description: classroomCount > 1 ? "Classrooms" : "Classroom",
-      color: "bg-gradient-to-b from-zinc-600 to-neutral-600 text-white",
+      color: "bg-blue-100 text-blue-600",
     },
   ];
+
   return (
     <div className="w-full flex flex-col items-start p-3">
       <Skeleton className="rounded-lg" isLoaded={loaded}>
-        <h1 className="text-md font-medium">{greetings}</h1>
+        <h1 className="text-md font-bold">{greetings}</h1>
       </Skeleton>
 
-      <div className="mt-6 w-full grid md:grid-cols-4 gap-4">
+      <div className="mt-6 w-full grid md:grid-cols-3 gap-4">
         <AnimatePresence>
           {boxInfo.map((item, idx) => (
             <motion.div
               key={idx}
-              className={`w-full h-[130px] p-6 flex items-center justify-center flex-col gap-2 rounded-2xl duration-500 relative overflow-hidden ${item.color} shadow-[5px_5px_0px_black]`}
+              className="w-full h-[130px] border border-zinc-200 bg-white shadow-2xl shadow-zinc-50 p-6 flex items-center justify-center flex-col gap-2 rounded-2xl duration-500 relative overflow-hidden"
             >
               <div className="w-full flex justify-start items-start gap-6">
                 <Skeleton isLoaded={loaded} className="rounded-full">
                   <div
-                    className={`size-10 grid place-items-center rounded-full bg-gradient-to-b from-white to-zinc-300 text-black`}
+                    className={`size-10 grid place-items-center rounded-full ${item.color}`}
                   >
                     <item.icon size={20} />
                   </div>
                 </Skeleton>
-                <div className="flex flex-col gap-2 text-white">
+                <div className="flex flex-col gap-2 text-zinc-800">
                   <Skeleton className="rounded-lg" isLoaded={loaded}>
-                    <p className="text-sm text-white font-black">
-                      {item.description}
-                    </p>
+                    <p className="text-lg text-zinc-600">{item.description}</p>
                   </Skeleton>
                   <div className="flex items-start ">
                     <Skeleton className="rounded-lg" isLoaded={loaded}>
                       <div className="w-32">
-                        <h1 className="text-3xl font-black text-white">
+                        <h1 className="text-3xl font-black text-zinc-800">
                           {item.value}
                         </h1>
                       </div>
@@ -163,28 +160,7 @@ const ListData = () => {
     <div className="mt-10 w-full flex flex-col gap-2 justify-start items-start p-2 text-zinc-900">
       <div className="w-full flex justify-between">
         <Skeleton className="rounded-lg" isLoaded={loaded}>
-          <h1 className="text-md font-black">Active Students</h1>
-        </Skeleton>
-
-        <Skeleton className="rounded-lg" isLoaded={loaded}>
-          <Dropdown backdrop="blur" showArrow radius="sm">
-            <DropdownTrigger>
-              <div className="flex gap-2">
-                <button
-                  className="flex items-center
-         gap-2 text-xs font-bold py-3 px-3 bg-gradient-to-br from-white to-zinc-100 border border-zinc-500 shadow-[4px_4px_0px_black] rounded-lg"
-                >
-                  Filter Students
-                  <PiCaretUpDownFill size={15} />
-                </button>
-              </div>
-            </DropdownTrigger>
-
-            <DropdownMenu className="p-3">
-              <DropdownItem>1st Year</DropdownItem>
-              <DropdownItem>2nd Year</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+          <h1 className="text-md font-black">Codecian Users</h1>
         </Skeleton>
       </div>
 
@@ -198,6 +174,26 @@ const ListData = () => {
 };
 
 const StudentsTable = () => {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    try {
+      const fetchUsersData = async () => {
+        const { data, error } = await supabase
+          .from("profile")
+          .select("id, first_name, last_name, username, points, rank")
+          .order("points", { ascending: false });
+
+        if (error) throw error;
+
+        setUsers(data);
+      };
+
+      fetchUsersData();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   return (
     <>
       <Table
@@ -207,10 +203,11 @@ const StudentsTable = () => {
       >
         <TableHeader>
           <TableColumn>ID</TableColumn>
-          <TableColumn>NAME</TableColumn>
-          <TableColumn>YEAR LEVEL</TableColumn>
-          <TableColumn>SECTION</TableColumn>
-          <TableColumn>GAINED POINTS</TableColumn>
+          <TableColumn>Username</TableColumn>
+          <TableColumn>First Name</TableColumn>
+          <TableColumn>Last Name</TableColumn>
+          <TableColumn>Points</TableColumn>
+          <TableColumn>Rank</TableColumn>
         </TableHeader>
         <TableBody
           emptyContent={
@@ -220,6 +217,16 @@ const StudentsTable = () => {
             />
           }
         >
+          {users.map((user) => (
+            <TableRow key={user.id}>
+              <TableCell>{user.id}</TableCell>
+              <TableCell>{user.username}</TableCell>
+              <TableCell>{user.first_name}</TableCell>
+              <TableCell>{user.last_name}</TableCell>
+              <TableCell>{user.points}</TableCell>
+              <TableCell>{user.rank}</TableCell>
+            </TableRow>
+          ))}
           {[]}
         </TableBody>
       </Table>

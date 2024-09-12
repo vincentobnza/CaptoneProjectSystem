@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import AdminNavbar from "../components/AdminNavbar";
 import { useLocation } from "react-router-dom";
@@ -22,6 +22,7 @@ import {
   TableCell,
 } from "@nextui-org/react";
 import NoData from "../components/ui/NoData";
+import { useAuth } from "../hooks/AuthContext.tsx";
 
 export default function Students() {
   const location = useLocation();
@@ -64,7 +65,7 @@ const Header = () => {
         <div className="flex gap-1">
           <input
             type="text"
-            className="w-[300px] h-10 border border-zinc-500 shadow-[4px_4px_0px_black] px-2 text-xs"
+            className="w-[300px] h-10 border border-zinc-200 px-2 text-xs outline-none focus:border focus:border-emerald-300"
             placeholder="Search for students"
           />
         </div>
@@ -87,7 +88,7 @@ const FilterStudents = () => {
     <div>
       <Dropdown>
         <DropdownTrigger>
-          <button className="flex items-center gap-2 px-3 h-10 text-xs text-zinc-600 font-semibold border border-zinc-500 outline-none shadow-[4px_4px_0px_black]">
+          <button className="flex items-center gap-2 px-3 h-10 text-xs text-zinc-600 font-semibold border border-zinc-200 outline-none">
             Filter students
             <RxCaretDown size={18} />
           </button>
@@ -110,40 +111,71 @@ const FilterStudents = () => {
 
 const AddNew = () => {
   return (
-    <button className="px-4 h-10 bg-indigo-600 text-white shadow-[4px_4px_0px_black] text-xs font-medium flex items-center gap-2">
+    <button className="px-4 h-10 bg-indigo-600 text-white rounded-lg text-xs font-medium flex items-center gap-2">
       Add New
       <IoMdAdd size={15} />
     </button>
   );
 };
 const StudentsTable = () => {
+  const [usersData, setUsersData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUsersInfo = async () => {
+      try {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from("profile")
+          .select("id, username,  first_name, last_name, rank")
+          .order("rank", { ascending: true, nullsLast: true });
+
+        if (error) throw error;
+
+        setUsersData(data);
+      } catch (error) {
+        console.error("Error fetching users data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsersInfo();
+  }, []);
+
   return (
-    <>
-      <Table
-        aria-label="Students table"
-        className="w-full border border-zinc-100 rounded-lg"
-        shadow="none"
+    <Table
+      aria-label="Students table"
+      className="w-full border border-zinc-100 rounded-lg"
+      shadow="none"
+    >
+      <TableHeader>
+        <TableColumn>ID</TableColumn>
+        <TableColumn>USERNAME</TableColumn>
+        <TableColumn>First Name</TableColumn>
+        <TableColumn>Last Name</TableColumn>
+        <TableColumn>Rank</TableColumn>
+      </TableHeader>
+      <TableBody
+        emptyContent={
+          <NoData
+            icon="https://cdn-icons-png.flaticon.com/128/7486/7486747.png"
+            text="No students yet"
+          />
+        }
+        loadingContent={<div>Loading...</div>}
+        loadingState={loading ? "loading" : "idle"}
       >
-        <TableHeader>
-          <TableColumn>ID</TableColumn>
-          <TableColumn>NAME</TableColumn>
-          <TableColumn>YEAR LEVEL</TableColumn>
-          <TableColumn>SECTION</TableColumn>
-          <TableColumn>STATUS</TableColumn>
-          <TableColumn>CLASS CODE</TableColumn>
-          <TableColumn>POINTS</TableColumn>
-        </TableHeader>
-        <TableBody
-          emptyContent={
-            <NoData
-              icon="https://cdn-icons-png.flaticon.com/128/7486/7486747.png"
-              text="No students yet"
-            />
-          }
-        >
-          {[]}
-        </TableBody>
-      </Table>
-    </>
+        {usersData.map((user) => (
+          <TableRow key={user.id}>
+            <TableCell>{user.id}</TableCell>
+            <TableCell>{user.username}</TableCell>
+            <TableCell>{user.first_name}</TableCell>
+            <TableCell>{user.last_name}</TableCell>
+            <TableCell>{user.rank || "N/A"}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 };

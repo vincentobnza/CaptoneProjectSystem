@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { BsLightning } from "react-icons/bs";
+import { motion } from "framer-motion";
 import Logo from "../components/Logo";
 import supabase from "../config/supabaseClient";
 import { useNavigate } from "react-router-dom";
@@ -9,11 +8,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function SetupProfile() {
   const [formData, setFormData] = useState({
+    uname: "",
     fname: "",
     lname: "",
   });
   const [user, setUser] = useState(null);
-  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,14 +33,33 @@ export default function SetupProfile() {
     }));
   };
 
+  const checkProfileExists = async () => {
+    const { data, error } = await supabase
+      .from("profile")
+      .select("*")
+      .eq("id", user.id)
+      .single();
+
+    if (error && error.code !== "PGRST116") throw error; // Ignore "No rows found" error
+    return data;
+  };
+
   const createProfile = async () => {
     if (!user) {
       throw new Error("You must be logged in to create a profile.");
     }
 
+    // Check if the profile already exists
+    const existingProfile = await checkProfileExists();
+    if (existingProfile) {
+      throw new Error("Profile already created.");
+    }
+
+    // Proceed with profile creation
     const { data, error } = await supabase.from("profile").upsert([
       {
         id: user.id,
+        username: formData.uname,
         first_name: formData.fname,
         last_name: formData.lname,
       },
@@ -54,18 +72,26 @@ export default function SetupProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Check if username is provided
+    if (!formData.uname) {
+      toast.error("Username is required!");
+      return;
+    }
+
     toast
       .promise(createProfile, {
         pending: "Creating your profile...",
         success: "Your profile was created successfully!",
         error: {
           render({ data }) {
-            return `Error creating profile: ${data.message}`;
+            if (data.message === "Profile already created.") {
+              setTimeout(() => navigate("/"), 2000);
+            }
+            return data.message;
           },
         },
       })
       .then(() => {
-        // Wait for 2 seconds before navigating
         setTimeout(() => {
           navigate("/");
         }, 2000);
@@ -93,10 +119,13 @@ export default function SetupProfile() {
           </p>
         </div>
 
-        <form className="mt-8 w-full grid grid-cols-2 gap-3">
+        <form
+          onSubmit={handleSubmit}
+          className="mt-8 w-full grid grid-cols-2 gap-3"
+        >
           <div className="flex-col w-full">
-            <label htmlFor="section" className="text-md font-semibold">
-              First name{" "}
+            <label htmlFor="uname" className="text-md font-semibold">
+              Username{" "}
               <span className="italic text-xs font-medium text-zinc-400">
                 {"(Required)"}
               </span>
@@ -105,15 +134,31 @@ export default function SetupProfile() {
               type="text"
               autoComplete="off"
               className="mt-2 w-full h-12 px-3 border border-zinc-300 rounded placeholder:text-sm outline-none focus:ring-2 ring-emerald-400 duration-400"
-              placeholder="First name"
+              placeholder="Username"
               onChange={handleInputChange}
               required
+              name="uname"
+            />
+          </div>
+          <div className="flex-col w-full">
+            <label htmlFor="fname" className="text-md font-semibold">
+              First name{" "}
+              <span className="italic text-xs font-medium text-zinc-400">
+                {"(Optional)"}
+              </span>
+            </label>
+            <input
+              type="text"
+              autoComplete="off"
+              className="mt-2 w-full h-12 px-3 border border-zinc-300 rounded placeholder:text-sm outline-none focus:ring-2 ring-emerald-400 duration-400"
+              placeholder="First name"
+              onChange={handleInputChange}
               name="fname"
             />
           </div>
           <div className="flex-col w-full">
-            <label htmlFor="section" className="text-md font-semibold">
-              Last name {""}
+            <label htmlFor="lname" className="text-md font-semibold">
+              Last name{" "}
               <span className="italic text-xs font-medium text-zinc-400">
                 {"(Optional)"}
               </span>
@@ -124,15 +169,14 @@ export default function SetupProfile() {
               className="mt-2 w-full h-12 px-3 border border-zinc-300 rounded placeholder:text-sm outline-none focus:ring-2 ring-emerald-400 duration-400"
               placeholder="Last name"
               onChange={handleInputChange}
-              required
               name="lname"
             />
           </div>
         </form>
 
         <button
-          onClick={handleSubmit}
           type="submit"
+          onClick={handleSubmit}
           className="mt-12 self-end bg-emerald-600 text-white text-sm font-bold px-6 py-2 rounded outline-none"
         >
           Save

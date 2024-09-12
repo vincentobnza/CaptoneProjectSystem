@@ -26,13 +26,13 @@ const Hero = () => {
       <div className="flex basis-full md:basis-1/2 flex-col gap-2 justify-start items-start text-left sm:p-5 md:p-5 lg:p-0">
         <div className="self-start gap-2 mb-3 rounded-full text-emerald-600 text-sm flex items-center">
           <HiLightningBolt size={20} />
-          <h1 className="font-black">Codecian</h1>
+          <h1 className="font-semibold">Codecian</h1>
         </div>
         <motion.h1
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="pointer-events-none z-10 whitespace-pre-wrap text-zinc-700 text-4xl md:text-6xl font-black leading-none text-transparent"
+          className="pointer-events-none z-10 whitespace-pre-wrap text-zinc-700 text-4xl md:text-6xl font-medium leading-none text-transparent"
         >
           Fast-Track Your IT Journey to{" "}
           <span className="text-emerald-600">Web Mastery</span>
@@ -55,7 +55,7 @@ const Hero = () => {
         >
           <Link
             to="/explore"
-            className="relative self-start text-lg font-black text-emerald-600 ease-in-out"
+            className="relative self-start text-lg font-semibold text-emerald-600 ease-in-out"
           >
             {"{Start Learning Today}"}
           </Link>

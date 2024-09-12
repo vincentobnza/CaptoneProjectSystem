@@ -38,12 +38,12 @@ const Header = () => {
       <div className="w-full flex gap-4">
         <div className="basis-1/2 flex flex-col gap-6">
           <h1 className="text-5xl font-semibold">Learn the basics of HTML </h1>
-          <p className="text-md font-semibold text-zinc-600">
+          <p className="mt-3 text-md text-zinc-600">
             Begin with the basics by learning HTML — a crucial foundation for
             creating and editing web pages.
           </p>
 
-          <button className="mt-10 self-start gap-4 py-3 px-10 bg-orange-700 text-white text-sm font-semibold shadow-[-4px_4px_0px_black] hover:translate-y-[-4px] hover:shadow-[-6px_6px_0px_black] duration-300 outline-none">
+          <button className="mt-5 self-start gap-4 py-3 px-10 bg-orange-700 text-white text-sm font-semibold shadow-[-4px_4px_0px_black] hover:translate-y-[-4px] hover:shadow-[-6px_6px_0px_black] duration-300 outline-none">
             Get Started
           </button>
         </div>

@@ -1,22 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { BsDatabase } from "react-icons/bs";
-import { RiLogoutCircleLine } from "react-icons/ri";
-import LogOutModal from "./ui/LogOutModal";
+
 import { useState } from "react";
-import { HiOutlineTrophy } from "react-icons/hi2";
-import { SiGoogleclassroom } from "react-icons/si";
-import { AiTwotoneDashboard } from "react-icons/ai";
 import Dashboard from "../icons/dashboard.png";
-import Classroom from "../icons/classroom.png";
 import Students from "../icons/students.png";
 import Leaderboard from "../icons/leaderboard.png";
-import RoomIcon from "../icons/room.png";
 import { AnimatePresence, motion } from "framer-motion";
 import AdminLogo from "../assets/adminlogo.png";
 
 export default function Sidebar({ active }) {
-  const [open, setOpen] = useState(false);
   const sidebarItems = [
     {
       item: "Dashboard",
@@ -48,11 +40,7 @@ export default function Sidebar({ active }) {
           <motion.li key={index}>
             <Link
               to={item.link}
-              className={`p-3 flex justify-start items-center gap-3 text-xs text-zinc-800 hover:bg-zinc-50 font-semibold hover:text-zinc-600 ease-in duration-300 relative ${
-                active === item.link
-                  ? "bg-zinc-50 text-zinc-600 before:absolute before:-left-1 before:h-full before:w-[3px] before:bg-zinc-500"
-                  : ""
-              }`}
+              className="p-3 flex flex-col  items-center gap-3 text-xs text-zinc-800 hover:bg-zinc-50 font-semibold hover:text-zinc-600 ease-in duration-300 relative"
             >
               {active === item.link && (
                 <div>

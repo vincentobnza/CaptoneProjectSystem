@@ -5,13 +5,11 @@ import NoData from "../components/ui/NoData";
 
 export default function Modules() {
   return (
-    <div className="w-full max-w-screen-xl mx-auto flex flex-col h-screen">
+    <div className="w-full">
       <Navbar />
-      <div className="flex flex-1 gap-2 h-full">
-        <div className="h-full">
-          <StudentSidebar />
-        </div>
-        <div className="flex-1 flex-col p-4 overflow-y-auto space-y-10">
+      <div className="flex px-5 py-1">
+        <StudentSidebar />
+        <div className="ml-64 flex-1 flex-col p-4 overflow-y-auto space-y-10">
           <Content />
         </div>
       </div>
@@ -21,8 +19,8 @@ export default function Modules() {
 
 const Content = () => {
   return (
-    <div className="mt-8 w-full flex flex-col gap-2">
-      <h1 className="text-lg font-bold">School Modules</h1>
+    <div className="mt-8 w-full flex flex-col gap-2 p-3">
+      <h1 className="text-lg font-medium">School Modules</h1>
 
       <NoData
         icon="https://cdn-icons-png.flaticon.com/128/7486/7486765.png"

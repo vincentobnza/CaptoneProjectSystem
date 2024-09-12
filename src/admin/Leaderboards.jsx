@@ -20,6 +20,7 @@ import {
   DropdownItem,
   Button,
 } from "@nextui-org/react";
+import NoData from "../components/ui/NoData";
 export default function Leaderboards() {
   const location = useLocation();
   const [active, setActive] = useState(location.pathname);
@@ -40,8 +41,9 @@ export default function Leaderboards() {
 
 const Content = () => {
   return (
-    <div className="flex flex-col items-start p-3">
+    <div className="flex flex-col space-y-4 items-start p-3">
       <Header />
+      <UsersTable />
     </div>
   );
 };
@@ -60,7 +62,7 @@ const Header = () => {
       <div className="basis-3/4 flex items-center justify-end gap-3">
         <button
           onClick={() => setOpen(true)}
-          className="flex items-center gap-2 px-3 h-10 text-xs text-zinc-600 font-semibold border border-zinc-500 outline-none shadow-[4px_4px_0px_black]"
+          className="flex items-center gap-2 px-3 h-12 rounded-xl text-xs text-zinc-600 font-semibold border border-zinc-300"
         >
           Enable to Students
         </button>
@@ -81,7 +83,7 @@ const FilterStudents = () => {
     <div>
       <Dropdown backdrop="blur">
         <DropdownTrigger>
-          <button className="flex items-center gap-2 px-3 h-10 text-xs bg-indigo-600 text-white font-semibold border border-indigo-600 outline-none shadow-[4px_4px_0px_black]">
+          <button className="flex items-center gap-2 px-3 h-12 rounded-xl text-xs bg-emerald-500 text-white font-semibold border border-emerlad-600 outline-none">
             Filter Records
             <RxCaretDown size={18} />
           </button>
@@ -94,10 +96,39 @@ const FilterStudents = () => {
           selectedKeys={selectedKeys}
           onSelectionChange={setSelectedKeys}
         >
-          <DropdownItem key="text">1st Year</DropdownItem>
-          <DropdownItem key="number">2nd Year</DropdownItem>
+          <DropdownItem key="text">Highest Points</DropdownItem>
+          <DropdownItem key="number">Lowest</DropdownItem>
         </DropdownMenu>
       </Dropdown>
     </div>
+  );
+};
+
+const UsersTable = () => {
+  return (
+    <>
+      <Table
+        aria-label="Students table"
+        className="w-full border border-zinc-100 rounded-lg"
+        shadow="none"
+      >
+        <TableHeader>
+          <TableColumn>ID</TableColumn>
+          <TableColumn>USERNAME</TableColumn>
+          <TableColumn>POINTS</TableColumn>
+          <TableColumn>RANK</TableColumn>
+        </TableHeader>
+        <TableBody
+          emptyContent={
+            <NoData
+              icon="https://cdn-icons-png.flaticon.com/128/7486/7486747.png"
+              text="No students yet"
+            />
+          }
+        >
+          {[]}
+        </TableBody>
+      </Table>
+    </>
   );
 };

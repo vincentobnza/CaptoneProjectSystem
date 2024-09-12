@@ -21,15 +21,18 @@ import ClassroomStudents from "./admin/ClassroomStudents";
 import Leaderboards from "./admin/Leaderboards";
 import ArchivedRooms from "./admin/ArchivedRooms";
 import Settings from "./pages/Settings";
+import Settings_Security from "./pages/Settings_Security";
 import SetupProfile from "./pages/SetupProfile";
 import CodeEditor from "./pages/CodeEditor";
 import Developers from "./pages/Developers";
+import StudentsHub from "./pages/StudentsHub";
 
 //STUDENT
 import StudentDashboard from "./pages/StudentDashboard";
 import Module from "./pages/Modules";
 import Learning from "./pages/Learning";
 import PlayGame from "./pages/PlayGame";
+import GamePlayground from "./pages/Game_Playground";
 
 import ProtectedRoute from "./private/ProtectedRoute";
 import Login from "./auth/Login";
@@ -45,7 +48,7 @@ const Css_Quiz = lazy(() => import("./quizzes/Css_Quiz"));
 
 function App() {
   return (
-    <div className="App font-Manrope text-zinc-950 bg-white">
+    <div className="App font-sans text-zinc-950 bg-white">
       <Suspense fallback={<Loading />}>
         <Routes>
           {/* Public routes */}
@@ -59,6 +62,24 @@ function App() {
             element={
               <ProtectedRoute>
                 <Explore />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/hub"
+            element={
+              <ProtectedRoute>
+                <StudentsHub />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/codecian-game"
+            element={
+              <ProtectedRoute>
+                <GamePlayground />
               </ProtectedRoute>
             }
           />
@@ -160,6 +181,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Settings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings/security"
+            element={
+              <ProtectedRoute>
+                <Settings_Security />
               </ProtectedRoute>
             }
           />

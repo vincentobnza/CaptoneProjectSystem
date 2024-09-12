@@ -25,7 +25,7 @@ const Content = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="pointer-events-none z-10 whitespace-pre-wrap text-zinc-700 text-4xl md:text-5xl font-black"
+          className="pointer-events-none z-10 whitespace-pre-wrap text-zinc-700 text-4xl md:text-5xl font-medium"
         >
           Welcome to Learning Space
         </motion.h1>
@@ -33,7 +33,7 @@ const Content = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-6 text-sm md:text-[16px] font-semibold text-zinc-600"
+          className="mt-6 text-sm md:text-[16px]  text-zinc-600"
         >
           Turn your ideas into reality with HTML, CSS, and JavaScript 🚀
         </motion.p>

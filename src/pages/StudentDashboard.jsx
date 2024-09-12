@@ -23,24 +23,22 @@ import ScrollUp from "../components/scrollUp.jsx";
 import { FaHtml5 } from "react-icons/fa";
 import { FaCss3Alt } from "react-icons/fa";
 import { FaJsSquare } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import supabase from "../config/supabaseClient.js";
+import { useAuth } from "../hooks/AuthContext.tsx";
 export default function StudentDashboard() {
   return (
     <div className="w-full">
       <Navbar />
-      <div className="w-full max-w-screen-xl mx-auto flex flex-col">
-        <div className="flex flex-1 gap-2 h-full">
-          <div className="h-full">
-            <StudentSidebar />
-          </div>
-          <div className="flex-1 flex-col p-4 overflow-y-auto space-y-10">
-            <Boxes />
-            <VideoLessons />
-            <DiscoverMore />
-            <LevelUp />
-          </div>
+      <div className="flex px-5 py-1">
+        <StudentSidebar />
+        <div className="ml-64 flex-1 flex-col p-4 overflow-y-auto space-y-10">
+          <Boxes />
+          <VideoLessons />
+          <DiscoverMore />
+          <LevelUp />
         </div>
       </div>
-
       <ScrollUp />
     </div>
   );
@@ -76,7 +74,7 @@ const Boxes = () => {
   return (
     <div className="mt-8 w-full flex flex-col gap-6">
       <div className="w-full flex justify-between items-center">
-        <h2 className="text-lg font-bold text-zinc-700">
+        <h2 className="text-lg font-medium text-zinc-700">
           Beginner's Starter Pack <span className="text-3xl">📦</span>
         </h2>
 
@@ -99,7 +97,7 @@ const Boxes = () => {
                 <Icon size={25} />
               </div>
               <div className="flex flex-col gap-4">
-                <h3 className="text-lg font-bold">{item.title}</h3>
+                <h3 className="text-lg font-medium">{item.title}</h3>
                 <p className="text-sm text-zinc-500">{item.description}</p>
               </div>
 
@@ -122,7 +120,7 @@ const Boxes = () => {
 const VideoLessons = () => {
   return (
     <div className="w-full flex flex-col gap-6">
-      <h2 className="text-lg font-bold">
+      <h2 className="text-lg font-medium">
         Online Tutorials <span className="text-3xl">🎬</span>
       </h2>
       <VideoCarousel />
@@ -135,25 +133,29 @@ const VideoCarousel = () => {
   const [translateX, setTranslateX] = useState(0);
   const { youtubeData } = useApi();
   const [openModal, setOpenModal] = useState(false);
-  const [selectedVideo, setSelectedVideo] = useState(null); // State to track selected video
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [loading, setLoading] = useState(false); // Add loading state for bookmarking
+  const { user } = useAuth();
 
-  const itemWidth = 350; // Width of each carousel item
+  const navigate = useNavigate();
+
+  const itemWidth = 350;
+  const gap = 16;
+  const visibleItems = 3;
+  const totalItems = youtubeData ? youtubeData.length : 0;
+  const totalWidth = totalItems * (itemWidth + gap) - gap;
 
   const handleNext = () => {
-    if (youtubeData && currentIndex < youtubeData.length - 1) {
-      if (currentIndex === youtubeData.length - 2) {
-        setTranslateX(-((youtubeData.length - 1) * itemWidth));
-      } else {
-        setTranslateX(translateX - itemWidth);
-      }
+    const maxTranslateX = -((totalItems - visibleItems) * (itemWidth + gap));
+    if (translateX > maxTranslateX) {
+      setTranslateX(Math.max(translateX - (itemWidth + gap), maxTranslateX));
       setCurrentIndex((prev) => prev + 1);
     }
   };
 
   const handlePrev = () => {
-    if (youtubeData && currentIndex > 0) {
-      const newTranslateX = Math.min(translateX + itemWidth, 0);
-      setTranslateX(newTranslateX);
+    if (translateX < 0) {
+      setTranslateX(Math.min(translateX + (itemWidth + gap), 0));
       setCurrentIndex((prev) => prev - 1);
     }
   };
@@ -163,13 +165,38 @@ const VideoCarousel = () => {
     setOpenModal(true);
   };
 
+  const handleBookmarkClick = async (video) => {
+    setLoading(true); // Set loading state while saving bookmark
+
+    try {
+      const { error } = await supabase.from("bookmarks").insert([
+        {
+          video_id: video.id,
+          title: video.title,
+          image: video.image,
+          duration: video.duration,
+          user_id: user.id, // Assuming the user is logged in
+          link: video.link,
+        },
+      ]);
+
+      if (error) throw error;
+
+      navigate("/student-dashboard/learnings");
+    } catch (error) {
+      console.error("Error bookmarking video:", error.message);
+    } finally {
+      setLoading(false); // Reset loading state
+    }
+  };
+
   return (
     <div className="w-full flex flex-col overflow-hidden relative">
       <div
-        className="flex transition duration-500 ease-in-out gap-4"
+        className="flex transition-transform duration-500 ease-in-out gap-4"
         style={{
           transform: `translateX(${translateX}px)`,
-          width: `${youtubeData ? youtubeData.length * itemWidth : 0}px`,
+          width: `${totalWidth}px`,
         }}
       >
         {youtubeData &&
@@ -178,14 +205,17 @@ const VideoCarousel = () => {
               key={index}
               className="w-[316px] border border-zinc-200 p-2 rounded-tl-2xl rounded-tr-2xl shadow-2xl shadow-zinc-50"
             >
-              <div
+              <motion.div
+                initial={{ opacity: 0, filter: "blur(10px)" }}
+                whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                transition={{ duration: 0.8 }}
                 className="w-full h-[13rem] rounded-tl-md rounded-tr-md"
                 style={{
                   backgroundImage: `url(${item.image})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}
-              ></div>
+              ></motion.div>
               <div className="p-4">
                 <h3 className="text-md font-semibold">{item.title}</h3>
                 <p className="text-sm text-zinc-500">
@@ -200,7 +230,7 @@ const VideoCarousel = () => {
                     <MdOutlineSmartDisplay size={27} />
                   </div>
 
-                  <div>
+                  <div onClick={() => handleBookmarkClick(item)}>
                     <FaRegBookmark size={20} className="cursor-pointer" />
                   </div>
                 </div>
@@ -211,13 +241,13 @@ const VideoCarousel = () => {
       <div className="w-full flex justify-end items-end mt-2 gap-2">
         <div
           onClick={handlePrev}
-          className="size-10 border border-zinc-500  grid place-content-center cursor-pointer"
+          className="size-10 border border-zinc-200 rounded-lg text-zinc-400 grid place-content-center cursor-pointer"
         >
           <GrCaretPrevious size={15} />
         </div>
         <div
           onClick={handleNext}
-          className="size-10 border border-zinc-500  grid place-content-center cursor-pointer"
+          className="size-10 border border-zinc-200 rounded-lg text-zinc-400 grid place-content-center cursor-pointer"
         >
           <GrCaretNext size={15} />
         </div>
@@ -231,6 +261,7 @@ const VideoCarousel = () => {
     </div>
   );
 };
+
 const VideoPlayer = ({ openModal, setOpenModal, video }) => {
   return (
     <>
@@ -269,8 +300,8 @@ const DiscoverMore = () => {
   return (
     <div className="w-full flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <h2 className="text-lg font-bold">
-          Discover More <span className="text-3xl">📢 </span>
+        <h2 className="text-lg font-medium">
+          Discover More <span className="text-3xl">📢</span>
         </h2>
         <p className="text-sm">
           Take an advanced path on your career development
@@ -313,7 +344,7 @@ const DiscoverMoreBoxes = () => {
         return (
           <div
             key={idx}
-            className="p-6 border border-zinc-200  rounded-2xl flex flex-col gap-2 cursor-pointer shadow-2xl shadow-zinc-100"
+            className="p-6 border border-zinc-200  rounded-2xl flex flex-col gap-2 cursor-pointer shadow-2xl shadow-zinc-100 group"
           >
             <div className="flex gap-6 justify-between">
               <div className="p-2 rounded-lg bg-emerald-50 self-start text-emerald-700">
@@ -338,7 +369,7 @@ const LevelUp = () => {
   return (
     <div className="w-full flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <h2 className="text-lg font-bold">
+        <h2 className="text-lg font-medium">
           Level Up Your Skills <span className="text-3xl">🤖 </span>
         </h2>
         <p className="text-sm">

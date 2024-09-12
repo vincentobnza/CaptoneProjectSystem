@@ -63,9 +63,7 @@ const PointsBanner = () => {
       />
       <div className="basis-1/2 flex items-start flex-col gap-2 z-10">
         <h1 className="text-2xl font-bold">Codecian Leaderboards</h1>
-        <p className="text-sm text-zinc-400 font-bold">
-          Compete and see your rankings.
-        </p>
+        <p className="text-sm text-zinc-400">Compete and see your rankings.</p>
       </div>
 
       <div className="basis-1/2 flex justify-end relative">
@@ -76,7 +74,9 @@ const PointsBanner = () => {
           <h1 className="self-end text-6xl font-bold bg-gradient-to-br from-orange-500 to-yellow-500 bg-clip-text text-transparent">
             {points}
           </h1>
-          <p className="mt-5 text-zinc-300 text-sm font-bold">Current Points</p>
+          <p className="mt-5 text-zinc-300 text-sm font-medium">
+            Current Points
+          </p>
         </div>
       </div>
     </div>
@@ -85,15 +85,15 @@ const PointsBanner = () => {
 
 const Ranking = () => {
   const [rankingData, setRankingData] = useState([]);
+  const [lastUpdated, setLastUpdated] = useState(new Date());
 
-  // Fetch ranking data and update lastUpdated
   useEffect(() => {
     const fetchRankingData = async () => {
       try {
         const { data, error } = await supabase
           .from("profile")
-          .select("id, points, first_name") // Adjust fields as necessary
-          .order("points", { ascending: false });
+          .select("id, points, first_name")
+          .order("points", { ascending: false, nullsLast: true });
 
         if (error) {
           console.error("Error fetching ranking data:", error);
@@ -101,8 +101,15 @@ const Ranking = () => {
         }
 
         if (data) {
-          setRankingData(data);
-          setLastUpdated(new Date()); // Update lastUpdated when data is fetched
+          const updatedData = data
+            .filter((user) => user.points !== null && user.points !== 0) // Remove users with null or 0 points
+            .map((user, index) => ({
+              ...user,
+              points: user.points || 0,
+              rank: index + 1,
+            }));
+          setRankingData(updatedData);
+          setLastUpdated(new Date());
         }
       } catch (error) {
         console.error("Error:", error);
@@ -112,27 +119,25 @@ const Ranking = () => {
     fetchRankingData();
   }, []);
 
-  // Date formatting
-  const date = new Date();
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  const month = monthNames[date.getMonth()];
-  const day = date.getDate();
-  const year = date.getFullYear();
-  const dateNow = `${month} ${day}, ${year}`;
+  const formatDate = (date) => {
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    return `${
+      monthNames[date.getMonth()]
+    } ${date.getDate()}, ${date.getFullYear()}`;
+  };
 
   return (
     <div className="w-full max-w-screen-md mx-auto p-8 rounded-2xl mt-5 flex flex-col gap-2 border border-zinc-200">
@@ -141,7 +146,7 @@ const Ranking = () => {
           <GiDiamondTrophy size={20} className="text-zinc-700" />
           <h1 className="text-zinc-800 text-md font-bold">Codecian Ranking</h1>
         </div>
-        <p className="text-xs font-semibold">{dateNow}</p>
+        <p className="text-xs font-semibold">{formatDate(lastUpdated)}</p>
       </div>
 
       {rankingData.length > 0 ? (
@@ -150,31 +155,31 @@ const Ranking = () => {
             <div
               key={user.id}
               className={`flex items-center justify-between p-3 relative ${
-                index % 2 === 0 ? "bg-zinc-50" : "bg-white"
-              } border border-gray-200`}
+                index === 0
+                  ? "bg-zinc-50"
+                  : index % 2 === 0
+                  ? "bg-zinc-50"
+                  : "bg-white"
+              } border border-zinc-200`}
             >
-              <div
-                className={
-                  index % 2 === 0
-                    ? "absolute -left-3 -top-7 -rotate-[30deg] flex"
-                    : "hidden"
-                }
-              >
-                <img
-                  src="https://cdn-icons-png.flaticon.com/128/707/707163.png"
-                  alt="crown"
-                  className="w-10"
-                />
-              </div>
+              {index === 0 && (
+                <div className="absolute -left-3 -top-7 -rotate-[30deg] flex">
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/128/707/707163.png"
+                    alt="crown"
+                    className="w-10"
+                  />
+                </div>
+              )}
               <div className="flex items-center gap-6">
                 <div className="w-10 h-10 bg-emerald-100 rounded-full border text-emerald-700 grid place-items-center font-black">
-                  <h1>{index + 1}</h1>
+                  <h1>{user.rank}</h1>
                 </div>
                 <div className="flex flex-col gap-1">
                   <h1 className="font-bold">{user.first_name}</h1>
-                  <p className={index % 2 === 0 ? "flex text-xs" : "hidden"}>
-                    Dev of the day 🤖
-                  </p>
+                  {index === 0 && (
+                    <p className="flex text-xs">Dev of the day 🤖</p>
+                  )}
                 </div>
               </div>
               <div className="flex flex-col gap-2">

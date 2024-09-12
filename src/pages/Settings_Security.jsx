@@ -6,7 +6,7 @@ import { useAuth } from "../hooks/AuthContext.tsx";
 import supabase from "../config/supabaseClient.js";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { Link } from "react-router-dom";
-export default function Settings() {
+export default function Settings_Security() {
   return (
     <div className="w-full h-screen bg-white flex justify-center p-8 text-zinc-800">
       <div className="flex w-full max-w-screen-lg relative gap-6">
@@ -33,12 +33,15 @@ const SideBar = () => {
 
       <ul className="flex flex-col gap-4 mt-10 text-zinc-700 text-sm">
         <li>
-          <Link to="/settings" className={active ? "text-emerald-500" : ""}>
-            Profile
-          </Link>
+          <Link to="/settings">Profile</Link>
         </li>
         <li>
-          <Link to="/settings/security">Security</Link>
+          <Link
+            to="/settings/security"
+            className={active ? "text-emerald-500" : ""}
+          >
+            Security
+          </Link>
         </li>
       </ul>
     </div>
@@ -55,7 +58,7 @@ const Content = () => {
         try {
           const { data, error } = await supabase
             .from("profile")
-            .select(", username, first_name, last_name")
+            .select("first_name, last_name")
             .eq("id", user.id)
             .single();
 
@@ -79,50 +82,17 @@ const Content = () => {
       </div>
 
       <div className="w-full mt-5 flex flex-col space-y-6">
-        <h1 className="text-sm font-semibold text-zinc-800">
-          Profile Information
-        </h1>
+        <h1 className="text-sm font-medium text-zinc-800">Profile Security</h1>
         <hr className="h-px mt-3 bg-zinc-200 border-0" />
 
-        <div className="w-full flex justify-between">
-          <div className="basis-1/4 flex flex-col gap-2">
-            <div className="size-24 rounded-full border border-zinc-200 bg-white shadow-xl shadow-zinc-100 relative bg-[url('https://cdn-icons-png.flaticon.com/128/17655/17655721.png')] bg-cover">
-              <div className="absolute -bottom-1 -right-1 text-emerald-500 cursor-pointer">
-                <AiFillPlusCircle size={35} />
-              </div>
-            </div>
-          </div>
-
-          <div className="basis-3/4 flex flex-col items-start gap-2">
-            <p className="text-zinc-500 font-medium text-sm">
-              Username
-              <span className="italic text-xs text-zinc-400">{`(Required)`}</span>
-            </p>
+        <div className="w-full flex">
+          <div className="w-full flex flex-col items-start gap-2">
+            <p className="text-zinc-500 font-medium text-sm">Email Address</p>
             <input
               type="text"
               className="w-full border-b border-zinc-300 p-3 bg-zinc-50 text-zinc-400 mb-3 outline-none focus:border-b-2 focus:border-emerald-500"
-              value={userInfo?.username}
+              value={user.email}
             />
-            <p className="text-zinc-500 font-medium text-sm">First Name</p>
-            <input
-              type="text"
-              className="w-full border-b border-zinc-300 p-3 bg-zinc-50 text-zinc-400 mb-3 outline-none focus:border-b-2 focus:border-emerald-500"
-              value={userInfo?.first_name}
-            />
-
-            <p className="text-zinc-500 font-medium text-sm">Last Name</p>
-            <input
-              type="text"
-              className="w-full border-b border-zinc-300 p-3 bg-zinc-50 text-zinc-400 mb-3 outline-none focus:border-b-2 focus:border-emerald-500"
-              value={userInfo?.last_name}
-            />
-
-            <button
-              disabled={true}
-              className="mt-8 self-end py-3 px-4 rounded-lg bg-emerald-500 text-white text-sm font-medium disabled:bg-zinc-300 disabled:cursor-not-allowed"
-            >
-              Save
-            </button>
           </div>
         </div>
       </div>

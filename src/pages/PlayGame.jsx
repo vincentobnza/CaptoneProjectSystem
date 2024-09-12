@@ -3,18 +3,15 @@ import Navbar from "../components/Navbar";
 import StudentSidebar from "../components/StudentSidebar";
 import GameBanner from "../assets/GameBanner.png";
 import { Card, CardFooter, Image, Button } from "@nextui-org/react";
+
 export default function PlayGame() {
   return (
     <div className="w-full">
       <Navbar />
-      <div className="w-full max-w-screen-xl mx-auto flex flex-col">
-        <div className="flex flex-1 gap-2 h-full">
-          <div className="h-full">
-            <StudentSidebar />
-          </div>
-          <div className="flex-1 flex-col justify-center items-center p-4 overflow-y-auto space-y-10">
-            <Banner />
-          </div>
+      <div className="flex px-5 py-1">
+        <StudentSidebar />
+        <div className="ml-64 flex-1 flex-col p-4 overflow-y-auto space-y-10">
+          <Banner />
         </div>
       </div>
     </div>
@@ -23,10 +20,10 @@ export default function PlayGame() {
 
 const Banner = () => {
   return (
-    <div className="mt-8 w-full flex flex-col gap-4">
-      <h1 className="text-lg font-bold">Codecian Games</h1>
+    <div className="mt-8 w-full flex flex-col gap-4 p-2">
+      <h1 className="text-lg font-medium">Codecian Games</h1>
 
-      <div className="self-start">
+      <div className="w-full self-start">
         <GameCard />
       </div>
     </div>
@@ -34,27 +31,36 @@ const Banner = () => {
 };
 
 const GameCard = () => {
+  const SwitchTab = () => {
+    window.open("http://localhost:5173/codecian-game", "_blank");
+  };
   return (
-    <Card isFooterBlurred radius="lg" className="border-none">
-      <Image
-        alt="Woman listing to music"
-        className="object-cover"
-        height={300}
-        src={GameBanner}
-        width={300}
-      />
-      <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
-        <p className="text-tiny text-white/80">Available Now</p>
-        <Button
-          className="text-tiny text-white bg-black/20"
-          variant="flat"
-          color="default"
-          radius="lg"
-          size="sm"
-        >
-          Play now
-        </Button>
-      </CardFooter>
-    </Card>
+    <div className="w-full grid md:grid-cols-4">
+      <div className="w-full border border-zinc-300 shadow-2xl shadow-zinc-100 rounded-lg">
+        <div className="w-full flex flex-col gap-1 p-4 bg-zinc-800 text-zinc-300 border border-zinc- relative rounded-tr-lg rounded-tl-lg">
+          <img
+            src="https://cdn-icons-png.flaticon.com/128/10490/10490256.png"
+            alt="opponent"
+            className="w-16 absolute top-2 right-2 opacity-30"
+          />
+          <h1 className="text-2xl font-medium text-zinc-100">Quiz Battle</h1>
+          <p className="text-xs">Test your knowledge</p>
+        </div>
+
+        <div className="flex flex-col gap-2 p-4">
+          <p className="text-xs">
+            Challenge your friends in real-time battles of wit and wisdom. Prove
+            you're the ultimate quiz master!
+          </p>
+
+          <button
+            onClick={SwitchTab}
+            className="mt-5 self-start py-1 px-2 rounded bg-emerald-600 text-white text-xs outline-none"
+          >
+            Battle Now
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
