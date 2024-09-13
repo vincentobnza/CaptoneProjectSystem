@@ -17,7 +17,7 @@ import { RiSettingsLine } from "react-icons/ri";
 export default function AdminNavbar() {
   return (
     <div className="fixed top-0 left-14 bg-white border-b border-zinc-100 h-14 w-full mx-auto flex justify-between items-center z-50">
-      <Link to="/admin/dashboard" className="ml-[240px] text-sm font-semibold">
+      <Link to="/admin/dashboard" className="ml-[240px] text-sm ">
         Admin View
       </Link>
 
@@ -26,7 +26,7 @@ export default function AdminNavbar() {
           <div className="mr-20 flex items-center gap-2">
             <button
               className="flex items-center
-         gap-2 text-xs font-bold py-2 px-3  "
+         gap-2 text-xs  py-2 px-3  "
             >
               <img src={Teacher} className="w-6 rounded-full" alt="teacher" />
               Instructor Mode

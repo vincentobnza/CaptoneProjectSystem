@@ -30,21 +30,21 @@ export default function Sidebar({ active }) {
   ];
 
   return (
-    <div className="hidden fixed top-0 left-0 bg-white w-[240px] border-r border-zinc-100 h-full md:flex flex-col text-center p-5 z-[80] shadow-2xl shadow-zinc-100">
+    <div className="hidden fixed top-0 left-0 bg-white w-[240px] border-r border-zinc-100 h-full md:flex flex-col text-center p-5 z-[40] shadow-2xl shadow-zinc-100">
       <div className="w-[90%] self-center flex items-center justify-start gap-4">
         <img src={AdminLogo} className="w-8 self-center" alt="" />
-        <h1 className="text-sm font-bold">Admin Panel</h1>
+        <h1 className="text-sm font-medium">Admin Panel</h1>
       </div>
       <ul className="flex flex-col gap-1 mt-[4rem]">
         {sidebarItems.map((item, index) => (
           <motion.li key={index}>
             <Link
               to={item.link}
-              className="p-3 flex flex-col  items-center gap-3 text-xs text-zinc-800 hover:bg-zinc-50 font-semibold hover:text-zinc-600 ease-in duration-300 relative"
+              className="p-3 flex flex-col  items-center gap-3 text-xs text-zinc-800 hover:bg-zinc-50 hover:text-zinc-600 ease-in duration-300 relative"
             >
               {active === item.link && (
                 <div>
-                  <img src={item.icon} className="size-6" alt="" />
+                  <img src={item.icon} className="size-6" alt="icons" />
                 </div>
               )}
               {active !== item.link && (
@@ -52,24 +52,11 @@ export default function Sidebar({ active }) {
                   <img src={item.icon} className="size-6 grayscale" alt="" />
                 </div>
               )}
-              <div className="ml-2 font-bold">{item.item}</div>
+              <div className="ml-2 ">{item.item}</div>
             </Link>
           </motion.li>
         ))}
       </ul>
-      {/* 
-      <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 ">
-        <ul className="w-full flex justify-center items-center flex-col relative">
-          <div
-            onClick={() => setOpen(!open)}
-            className="w-full p-2 flex justify-center items-center gap-4 text-center text-xs font-semibold text-zinc-700  hover:text-emerald-700 hover:font-bold ease-in duration-300 cursor-pointer"
-          >
-            <RiLogoutCircleLine size={20} />
-            Logout
-          </div>
-          <LogOutModal open={open} setOpen={setOpen} />
-        </ul>
-      </div> */}
     </div>
   );
 }
