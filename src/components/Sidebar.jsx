@@ -32,7 +32,7 @@ export default function Sidebar({ active }) {
   return (
     <div className="hidden fixed top-0 left-0 bg-white w-[240px] border-r border-zinc-100 h-full md:flex flex-col text-center p-5 z-[40] shadow-2xl shadow-zinc-100">
       <div className="w-[90%] self-center flex items-center justify-start gap-4">
-        <img src={AdminLogo} className="w-8 self-center" alt="" />
+        <img src={AdminLogo} className="w-8 self-center z-50" alt="logo" />
         <h1 className="text-sm font-medium">Admin Panel</h1>
       </div>
       <ul className="flex flex-col gap-1 mt-[4rem]">
@@ -40,7 +40,7 @@ export default function Sidebar({ active }) {
           <motion.li key={index}>
             <Link
               to={item.link}
-              className="p-3 flex flex-col  items-center gap-3 text-xs text-zinc-800 hover:bg-zinc-50 hover:text-zinc-600 ease-in duration-300 relative"
+              className="p-3 flex flex-col  items-center gap-3 text-xs text-zinc-800 hover:bg-zinc-50 hover:text-zinc-600 ease-in duration-300 relative  font-semibold"
             >
               {active === item.link && (
                 <div>

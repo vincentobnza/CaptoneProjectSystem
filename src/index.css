@@ -12,3 +12,7 @@ html,
 body {
   scroll-behavior: smooth;
 }
+@font-face {
+  font-family: "Mona-Sans";
+  src: url("./fonts/Mona-Sans.ttf") format("truetype");
+}

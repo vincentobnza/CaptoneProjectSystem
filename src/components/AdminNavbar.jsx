@@ -16,7 +16,7 @@ import { RiSettingsLine } from "react-icons/ri";
 
 export default function AdminNavbar() {
   return (
-    <div className="fixed top-0 left-14 bg-white border-b border-zinc-100 h-14 w-full mx-auto flex justify-between items-center z-50">
+    <div className="fixed top-0 left-14 bg-white border-b border-zinc-100 h-14 w-full mx-auto flex justify-between items-center z-20">
       <Link to="/admin/dashboard" className="ml-[240px] text-sm ">
         Admin View
       </Link>

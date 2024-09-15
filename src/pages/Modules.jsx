@@ -2,16 +2,19 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import StudentSidebar from "../components/StudentSidebar";
 import NoData from "../components/ui/NoData";
+import Header from "../components/Header";
 
 export default function Modules() {
   return (
     <div className="w-full">
       <Navbar />
-      <div className="flex px-5 py-1">
-        <StudentSidebar />
-        <div className="ml-64 flex-1 flex-col p-4 overflow-y-auto space-y-10">
-          <Content />
-        </div>
+
+      <div className="w-full max-w-screen-lg mx-auto flex-col p-8 overflow-y-auto space-y-14">
+        <Header
+          title="School Modules"
+          description="View all your intructor modules"
+        />
+        <Content />
       </div>
     </div>
   );
@@ -19,9 +22,7 @@ export default function Modules() {
 
 const Content = () => {
   return (
-    <div className="mt-8 w-full flex flex-col gap-2 p-3">
-      <h1 className="text-lg font-medium">School Modules</h1>
-
+    <div className="w-full flex flex-col gap-2 p-3">
       <NoData
         icon="https://cdn-icons-png.flaticon.com/128/7486/7486765.png"
         text="No modules has been addet yet by your instructor."

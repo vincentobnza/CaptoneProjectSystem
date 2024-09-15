@@ -12,6 +12,8 @@ export default {
     extend: {
       fontFamily: {
         Manrope: ["Manrope", "sans-serif"],
+        MonaSans: ['"Mona-Sans"', "sans-serif"],
+        Merriweather: ["Merriweather", "serif"],
       },
     },
   },

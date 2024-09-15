@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
-import StudentSidebar from "../components/StudentSidebar";
 import { GoCodespaces } from "react-icons/go";
 import { useState } from "react";
 import { MdOutlineSmartDisplay } from "react-icons/md";
@@ -26,20 +25,53 @@ import { FaJsSquare } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import supabase from "../config/supabaseClient.js";
 import { useAuth } from "../hooks/AuthContext.tsx";
+import Header from "../components/Header.jsx";
+import Footer from "../components/Footer.jsx";
+
 export default function StudentDashboard() {
+  const { user } = useAuth();
+  const [userInfo, setUserInfo] = useState(null);
+  const [loading, setLoading] = useState(true); // Loading state
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("profile")
+        .select("username")
+        .eq("id", user.id)
+        .single();
+      if (error) {
+        console.error(error);
+        return;
+      }
+      setUserInfo(data);
+      setLoading(false);
+    };
+
+    if (user?.id) {
+      fetchUser();
+    }
+  }, [user?.id]);
+
   return (
     <div className="w-full">
       <Navbar />
-      <div className="flex px-5 py-1">
-        <StudentSidebar />
-        <div className="ml-64 flex-1 flex-col p-4 overflow-y-auto space-y-10">
-          <Boxes />
-          <VideoLessons />
-          <DiscoverMore />
-          <LevelUp />
-        </div>
+
+      <div className="w-full max-w-screen-lg mx-auto flex flex-col p-8 overflow-y-auto space-y-14">
+        <Header
+          title={loading ? "Loading..." : `${userInfo?.username}'s Dashboard`}
+          description="Enjoy your learning journey."
+        />
+
+        <Boxes />
+        <VideoLessons />
+        <DiscoverMore />
+        <LevelUp />
       </div>
       <ScrollUp />
+
+      <Footer />
     </div>
   );
 }
@@ -72,9 +104,9 @@ const Boxes = () => {
     },
   ];
   return (
-    <div className="mt-8 w-full flex flex-col gap-6">
+    <div className="w-full flex flex-col gap-6">
       <div className="w-full flex justify-between items-center">
-        <h2 className="text-lg font-medium text-zinc-700">
+        <h2 className="text-lg font-semibold text-zinc-900">
           Beginner's Starter Pack <span className="text-3xl">📦</span>
         </h2>
 
@@ -87,7 +119,7 @@ const Boxes = () => {
             <Link
               to={item.link}
               key={index}
-              className="w-full h-[240px] p-4 bg-white border border-zinc-200 cursor-pointer flex flex-col gap-2 relative shadow-2xl shadow-zinc-50 rounded-2xl overflow-hidden"
+              className="w-full h-[300px] p-4 bg-white border border-zinc-200 cursor-pointer flex flex-col gap-2 relative shadow-2xl shadow-zinc-50 rounded-2xl overflow-hidden"
             >
               <Icon
                 size={120}
@@ -97,17 +129,27 @@ const Boxes = () => {
                 <Icon size={25} />
               </div>
               <div className="flex flex-col gap-4">
-                <h3 className="text-lg font-medium">{item.title}</h3>
-                <p className="text-sm text-zinc-500">{item.description}</p>
+                <h3 className="text-xl font-semibold">{item.title}</h3>
+                <p className="text-sm text-zinc-800 font-medium">
+                  {item.description}
+                </p>
               </div>
 
-              <div className="absolute bottom-0 left-0 w-full justify-between  items-center flex py-2 px-3">
-                <div className="flex items-center gap-2">
-                  <GoCodespaces size={20} />
-                  <h1 className="text-xs font-semibold">Entry Level</h1>
-                </div>
+              <div className="absolute bottom-0 left-0 w-full justify-between items-center flex px-3 py-2 ">
+                <div className="w-full flex justify-between items-center mx-auto p-2 border border-zinc-200 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <GoCodespaces size={20} />
+                    <h1 className="text-xs font-semibold">Entry Level</h1>
+                  </div>
 
-                <FiArrowUpRight size={23} />
+                  <Link
+                    to={item.link}
+                    className="p-2 rounded-lg bg-zinc-800 text-white text-xs font-semibold flex items-center gap-2"
+                  >
+                    Start
+                    <FiArrowUpRight size={16} />
+                  </Link>
+                </div>
               </div>
             </Link>
           );
@@ -120,7 +162,7 @@ const Boxes = () => {
 const VideoLessons = () => {
   return (
     <div className="w-full flex flex-col gap-6">
-      <h2 className="text-lg font-medium">
+      <h2 className="text-lg font-bold">
         Online Tutorials <span className="text-3xl">🎬</span>
       </h2>
       <VideoCarousel />
@@ -300,10 +342,10 @@ const DiscoverMore = () => {
   return (
     <div className="w-full flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <h2 className="text-lg font-medium">
+        <h2 className="text-lg font-bold">
           Discover More <span className="text-3xl">📢</span>
         </h2>
-        <p className="text-sm">
+        <p className="text-sm font-semibold">
           Take an advanced path on your career development
         </p>
 
@@ -321,6 +363,7 @@ const DiscoverMoreBoxes = () => {
       description:
         "Master array creation, access, and manipulation in JavaScript.",
       icon: LuDatabase,
+      bgColor: "bg-gradient-to-br from-emerald-400 to-emerald-700",
     },
     {
       id: 2,
@@ -328,6 +371,7 @@ const DiscoverMoreBoxes = () => {
       description:
         "JavaScript objects store key-value pairs for organizing data.",
       icon: MdOutlineDataObject,
+      bgColor: "bg-gradient-to-br from-orange-400 to-orange-700",
     },
     {
       id: 3,
@@ -335,6 +379,7 @@ const DiscoverMoreBoxes = () => {
       description:
         "JavaScript Object-Oriented Programming uses classes and objects to structure code.",
       icon: MdOutlineDataObject,
+      bgColor: "bg-gradient-to-br from-indigo-400 to-indigo-700",
     },
   ];
   return (
@@ -347,12 +392,14 @@ const DiscoverMoreBoxes = () => {
             className="p-6 border border-zinc-200  rounded-2xl flex flex-col gap-2 cursor-pointer shadow-2xl shadow-zinc-100 group"
           >
             <div className="flex gap-6 justify-between">
-              <div className="p-2 rounded-lg bg-emerald-50 self-start text-emerald-700">
+              <div
+                className={`p-2 rounded-lg ${item.bgColor} self-start text-white`}
+              >
                 <Icon size={20} />
               </div>
               <div className="flex flex-col gap-4">
                 <h1 className="text-md font-semibold">{item.title}</h1>
-                <p className="text-sm pr-2">{item.description}</p>
+                <p className="text-sm pr-2 font-medium">{item.description}</p>
               </div>
               <div className="h-full flex items-center">
                 <IoIosArrowForward size={25} />
@@ -369,10 +416,10 @@ const LevelUp = () => {
   return (
     <div className="w-full flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <h2 className="text-lg font-medium">
+        <h2 className="text-lg font-bold">
           Level Up Your Skills <span className="text-3xl">🤖 </span>
         </h2>
-        <p className="text-sm">
+        <p className="text-sm font-semibold">
           Embark on an advanced path to enhance your development expertise with
           essential tools.
         </p>
@@ -391,6 +438,8 @@ const LevelUpBoxes = () => {
       description:
         "Learn the fundamentals of version control and streamline your coding workflow.",
       icon: IoIosGitBranch,
+      image:
+        "https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/141_Git_logo_logos-1024.png",
     },
     {
       id: 2,
@@ -398,6 +447,7 @@ const LevelUpBoxes = () => {
       description:
         "Discover how to manage your projects, collaborate with others, and build your portfolio",
       icon: FaGithub,
+      image: "http://pngimg.com/uploads/github/github_PNG76.png",
     },
   ];
   return (
@@ -407,15 +457,20 @@ const LevelUpBoxes = () => {
         return (
           <div
             key={idx}
-            className="p-8 flex flex-col gap-2 border border-zinc-200 rounded-2xl shadow-2xl shadow-zinc-100 cursor-pointer"
+            className="p-10 flex flex-col gap-2 bg-gradient-to-br from-zinc-700 to-zinc-800 rounded-2xl shadow-2xl shadow-zinc-100 cursor-pointer text-white relative overflow-hidden"
           >
+            <img
+              src={item.image}
+              alt="github logo"
+              className="w-36 absolute -bottom-2 -right-4 opacity-40"
+            />
             <div className="flex gap-6 justify-between">
-              <div className="p-2 self-start bg-orange-50 text-orange-700 rounded-full">
+              <div className="p-2 self-start bg-zinc-600 text-zinc-200 rounded-full">
                 <Icon size={20} />
               </div>
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 z-10">
                 <h1 className="text-md font-semibold">{item.title}</h1>
-                <p className="text-sm pr-2">{item.description}</p>
+                <p className="text-sm pr-2 text-zinc-300">{item.description}</p>
               </div>
             </div>
           </div>

@@ -48,7 +48,7 @@ const Css_Quiz = lazy(() => import("./quizzes/Css_Quiz"));
 
 function App() {
   return (
-    <div className="App font-sans text-zinc-950 bg-white">
+    <div className="App font-MonaSans text-zinc-950 bg-white">
       <Suspense fallback={<Loading />}>
         <Routes>
           {/* Public routes */}

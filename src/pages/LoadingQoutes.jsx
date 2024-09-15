@@ -25,7 +25,7 @@ export default function LoadingQuotes() {
       author: "Chris Pine",
     },
     {
-      quote: "The more you practice, the better you get 🔥",
+      quote: "The more you practice, the better you get",
       author: "Unknown",
     },
   ];
@@ -58,12 +58,12 @@ export default function LoadingQuotes() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1.5 }}
-          className="w-full h-screen bg-zinc-900 grid place-items-center text-white"
+          className="w-full h-screen bg-zinc-900 grid place-items-center text-white font-Merriweather"
         >
-          <div className="w-full max-w-screen-sm mx-auto flex flex-col justify-center items-center p-10 text-center gap-6">
-            <h1 className="text-3xl">{randomQuote.quote}</h1>
+          <div className="w-full max-w-screen-lg mx-auto flex flex-col justify-center items-center p-10 text-center gap-6">
+            <h1 className="text-5xl">{randomQuote.quote}</h1>
             <p className="text-zinc-400">- {randomQuote.author}</p>
-            <BarLoader color="white" className="mt-10" speedMultiplier={0.3} />
+            <BarLoader color="white" className="mt-10" speedMultiplier={1} />
           </div>
         </motion.div>
       )}

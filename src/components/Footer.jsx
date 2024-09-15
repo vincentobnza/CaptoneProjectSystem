@@ -40,7 +40,7 @@ export default function Footer() {
     },
   ];
   return (
-    <div className="mt-10 w-full border-t border-zinc-200 bg-zinc-100 h-[300px] flex flex-col gap-2 justify-center text-zinc-700 relative">
+    <div className="w-full bg-zinc-50 border-t border-zinc-200 h-[300px] flex flex-col gap-2 justify-center text-zinc-700 relative">
       <img
         src={FooterImg}
         alt="image"

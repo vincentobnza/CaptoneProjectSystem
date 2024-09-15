@@ -42,7 +42,7 @@ const Header = () => {
     <div className="w-full max-w-screen-lg mx-auto">
       <div className="w-full flex gap-4">
         <div className="basis-1/2 flex flex-col gap-6">
-          <h1 className="text-5xl font-black">
+          <h1 className="text-5xl font-semibold">
             Learn the basics of JavaScript{" "}
           </h1>
           <p className="mt-3 text-md text-zinc-600">
@@ -71,7 +71,7 @@ const ProgressCard = () => {
   return (
     <div className="size-[280px] bg-yellow-100 border border-black text-black shadow-[-8px_8px_0px_black] grid place-items-center">
       <div className="flex flex-col justify-center items-center gap-4">
-        <h1 className="text-sm font-black">Learning Progress</h1>
+        <h1 className="text-sm font-semibold">Learning Progress</h1>
         <CircularProgress
           classNames={{
             svg: "w-36 h-36 drop-shadow-md",
@@ -113,7 +113,7 @@ const CourseOutline = () => {
       />
       <div className="w-full flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <h1 className="text-xl font-black">Learning Outline</h1>
+          <h1 className="text-xl font-semibold">Learning Outline</h1>
           <p className="text-sm font-medium">
             Introduction to HTML structure, elements, attributes, and basic tags
             usage.
@@ -124,7 +124,7 @@ const CourseOutline = () => {
           {outline.map((item, idx) => (
             <li
               key={idx}
-              className="list-inside list-disc font-bold underline underline-offset-4"
+              className="list-inside list-disc font-medium underline underline-offset-4"
             >
               {item}
             </li>

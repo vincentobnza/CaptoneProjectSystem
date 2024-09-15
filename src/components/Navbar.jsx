@@ -7,8 +7,7 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Avatar,
-  User,
+  DropdownSection,
 } from "@nextui-org/react";
 import { RiSettings6Line } from "react-icons/ri";
 import { VscSignOut } from "react-icons/vsc";
@@ -16,94 +15,98 @@ import { Switch } from "@nextui-org/react";
 import { RiMoonClearFill } from "react-icons/ri";
 import { IoIosSunny } from "react-icons/io";
 import { MdOutlineFeedback } from "react-icons/md";
+import { RxCaretDown } from "react-icons/rx";
+import { MdOutlineArrowOutward } from "react-icons/md";
 
 const Navbar = () => {
-  const navItems = [
-    { nav: "Home", link: "/", path: false },
-    { nav: "Learning Space", link: "/explore", path: true },
-    { nav: "Leaderboards", link: "/qoutes", path: true },
-    // { nav: "Students Hub", link: "/hub", path: true },
-    { nav: "Developers", link: "/developers", path: true },
-  ];
-
   const { user, signOut } = useAuth();
+
+  console.log(user);
 
   const handleSignOut = async () => {
     await signOut();
   };
   return (
-    <nav className="sticky top-0 left-0 w-full grid place-items-center bg-white border-b border-zinc-100 z-[60]">
+    <nav className="sticky top-0 left-0 w-full grid place-items-center bg-white z-[60] p-3">
       <div className="w-full flex max-w-screen-xl mx-auto justify-between items-center relative py-2 px-9 text-zinc-900">
-        <Link
-          to="/"
-          className="flex justify-start items-center gap-6 font-semibold text-zinc-700 text-sm"
-        >
-          {"{ Codecian }"}
-        </Link>
-        <ul className="hidden md:flex items-center gap-2 text-[12px] tracking-wide py-2 px-6 text-xs text-zinc-700">
-          {navItems.map((item, index) => (
-            <li
-              key={index}
-              className="p-1 duration-500 hover:opacity-80 hover:text-emerald-600"
-            >
-              <Link to={item.link} className="px-2 duration-400">
-                {item.nav}
+        <div className="flex items-center gap-4">
+          <Link
+            to="/"
+            className="flex justify-start items-center gap-6 font-semibold text-black text-sm"
+          >
+            {"{ Codecian }"}
+          </Link>
+          <ul className="hidden md:flex items-center gap-2 text-[12px] tracking-wide py-2 px-6 text-xs text-zinc-950 font-semibold">
+            <li className="p-1 duration-500 hover:opacity-80 hover:text-emerald-600">
+              <Link to="/" className="px-2 duration-400">
+                Home
               </Link>
             </li>
-          ))}
-        </ul>
+            <li className="p-1 duration-500 hover:opacity-80 hover:text-emerald-600">
+              <Link
+                to="/explore"
+                className="px-2 duration-400 flex items-center gap-2"
+              >
+                Explore
+              </Link>
+            </li>
+            <li className="p-1 duration-500 hover:opacity-80 hover:text-emerald-600">
+              <Link to="/qoutes" className="px-2 duration-400">
+                Leaderboards
+              </Link>
+            </li>
+            <li className="p-1 duration-500 hover:opacity-80 hover:text-emerald-600">
+              <Link to="/developers" className="px-2 duration-400 relative">
+                Developers
+                <div className="absolute top-0 -right-3">
+                  <MdOutlineArrowOutward />
+                </div>
+              </Link>
+            </li>
+          </ul>
+        </div>
 
         <div className="relative">
           <div className="flex items-center gap-6">
             {user ? (
               // Profile Default is Cat hehehe
-              <Dropdown placement="bottom-end" className="text-xs font-sans">
+              <Dropdown
+                placement="bottom-end"
+                className="text-xs font-MonaSans"
+              >
                 <DropdownTrigger>
-                  <div className="size-8 shadow-[-2px_2px_0px_black] hover:translate-y-[-4px] hover:shadow-[-4px_4px_0px_black] grid place-items-center border border-zinc-700 overflow-hidden cursor-pointer hover:opacity-70 duration-400 outline-none">
-                    <img
-                      src={DefaultProfile}
-                      alt="default profile"
-                      className="object-cover"
-                    />
+                  <div className="flex items-center gap-4">
+                    <h1 className="font-bold text-xs">{user.email}</h1>
+                    <div className="size-12 grid place-items-center cursor-pointer border border-zinc-100 rounded-full overflow-hidden">
+                      <img
+                        src={
+                          user.user_metadata.avatar_url || "default_profile_url"
+                        }
+                        alt="default profile"
+                        className="object-cover"
+                      />
+                    </div>
                   </div>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Profile Actions" variant="flat">
                   <DropdownItem key="profile" className="h-14 gap-4">
                     <p className="font-semibold">Signed in as</p>
-                    <p className="font-semibold">{user.email}</p>
+                    <p className="font-semibold">{user.user_metadata.name}</p>
                   </DropdownItem>
-                  <DropdownItem
-                    href="/settings"
-                    key="settings"
-                    startContent={
-                      <RiSettings6Line size={18} className="text-zinc-400" />
-                    }
-                  >
+                  <DropdownItem href="/settings" key="settings">
                     My Settings
                   </DropdownItem>
-                  <DropdownItem
-                    key="feedback"
-                    startContent={
-                      <MdOutlineFeedback size={18} className="text-zinc-400" />
-                    }
-                  >
-                    Send Feedback
-                  </DropdownItem>
-                  <DropdownItem
-                    onClick={handleSignOut}
-                    key="logout"
-                    startContent={
-                      <VscSignOut size={18} className="text-zinc-400" />
-                    }
-                  >
-                    Sign Out
+                  <DropdownItem key="feedback">Send Feedback</DropdownItem>
+
+                  <DropdownItem key="signout" onClick={handleSignOut}>
+                    Signout
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             ) : (
               <Link
                 to="/login"
-                className="flex items-center gap-1 px-6 py-2 border border-zinc-400 text-zinc-900 transition ease-in-out duration-500 outline-none text-xs"
+                className="flex items-center gap-1 px-8 py-3 bg-zinc-900 text-white rounded-full transition ease-in-out duration-500 outline-none text-xs tracking-wide font-semibold"
               >
                 Login
               </Link>

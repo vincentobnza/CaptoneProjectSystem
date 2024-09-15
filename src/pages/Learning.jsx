@@ -7,16 +7,18 @@ import { useAuth } from "../hooks/AuthContext";
 import ReactPlayer from "react-player/youtube";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaRegCirclePlay } from "react-icons/fa6";
-
+import Header from "../components/Header";
 export default function Learning() {
   return (
     <div className="w-full">
       <Navbar />
-      <div className="flex px-5 py-1">
-        <StudentSidebar />
-        <div className="ml-64 flex-1 flex-col p-4 overflow-y-auto space-y-10">
-          <Content />
-        </div>
+
+      <div className="w-full max-w-screen-lg mx-auto flex-col p-8 overflow-y-auto space-y-14">
+        <Header
+          title="My Learnings"
+          description="View all your saved learnings"
+        />
+        <Content />
       </div>
     </div>
   );
@@ -50,9 +52,7 @@ const Content = () => {
   }, []);
 
   return (
-    <div className="mt-8 w-full flex flex-col gap-2 p-2">
-      <h1 className="text-lg font-medium mb-4">My Learnings</h1>
-
+    <div className="w-full flex flex-col gap-2 p-2">
       {bookmarks.length === 0 ? (
         <NoData
           icon="https://cdn-icons-png.flaticon.com/128/7486/7486765.png"
