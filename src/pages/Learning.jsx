@@ -7,18 +7,17 @@ import { useAuth } from "../hooks/AuthContext";
 import ReactPlayer from "react-player/youtube";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaRegCirclePlay } from "react-icons/fa6";
-import Header from "../components/Header";
 export default function Learning() {
   return (
     <div className="w-full">
       <Navbar />
-
-      <div className="w-full max-w-screen-lg mx-auto flex-col p-8 overflow-y-auto space-y-14">
-        <Header
-          title="My Learnings"
-          description="View all your saved learnings"
-        />
-        <Content />
+      <div className="flex flex-1 overflow-hidden">
+        <StudentSidebar />
+        <main className="flex-1 overflow-y-auto p-6">
+          <div className="ml-64 max-w-7xl mx-auto space-y-14">
+            <Content />
+          </div>
+        </main>
       </div>
     </div>
   );

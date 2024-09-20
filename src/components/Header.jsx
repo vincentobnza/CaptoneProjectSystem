@@ -7,7 +7,9 @@ const Header = (props) => {
     <div className="w-full max-w-screen-lg mx-auto">
       <div className="w-full flex justify-between items-center">
         <div className="space-y-2">
-          <h4 className="text-3xl font-semibold">{props.title}</h4>
+          <h4 className="text-3xl font-semibold font-Merriweather">
+            {props.title}
+          </h4>
           <p className="text-sm font-semibold">{props.description}</p>
         </div>
 

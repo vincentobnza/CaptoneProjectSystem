@@ -18,7 +18,7 @@ import { MdOutlineDataObject } from "react-icons/md";
 import { IoIosGitBranch } from "react-icons/io";
 import { FaGithub } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import ScrollUp from "../components/scrollUp.jsx";
+import ScrollUp from "../components/ScrollUp.jsx";
 import { FaHtml5 } from "react-icons/fa";
 import { FaCss3Alt } from "react-icons/fa";
 import { FaJsSquare } from "react-icons/fa";
@@ -27,11 +27,12 @@ import supabase from "../config/supabaseClient.js";
 import { useAuth } from "../hooks/AuthContext.tsx";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
+import StudentSidebar from "../components/StudentSidebar.jsx";
 
 export default function StudentDashboard() {
   const { user } = useAuth();
   const [userInfo, setUserInfo] = useState(null);
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -55,27 +56,24 @@ export default function StudentDashboard() {
   }, [user?.id]);
 
   return (
-    <div className="w-full">
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-
-      <div className="w-full max-w-screen-lg mx-auto flex flex-col p-8 overflow-y-auto space-y-14">
-        <Header
-          title={loading ? "Loading..." : `${userInfo?.username}'s Dashboard`}
-          description="Enjoy your learning journey."
-        />
-
-        <Boxes />
-        <VideoLessons />
-        <DiscoverMore />
-        <LevelUp />
+      <div className="flex flex-1 overflow-hidden">
+        <StudentSidebar />
+        <main className="flex-1 overflow-y-auto p-6">
+          <div className="ml-64 max-w-7xl mx-auto space-y-14">
+            <Boxes />
+            <VideoLessons />
+            <DiscoverMore />
+            <LevelUp />
+          </div>
+        </main>
       </div>
       <ScrollUp />
-
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
-
 const Boxes = () => {
   const List = [
     {
@@ -162,7 +160,7 @@ const Boxes = () => {
 const VideoLessons = () => {
   return (
     <div className="w-full flex flex-col gap-6">
-      <h2 className="text-lg font-bold">
+      <h2 className="text-lg font-semibold">
         Online Tutorials <span className="text-3xl">🎬</span>
       </h2>
       <VideoCarousel />
@@ -342,10 +340,10 @@ const DiscoverMore = () => {
   return (
     <div className="w-full flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <h2 className="text-lg font-bold">
+        <h2 className="text-lg font-semibold">
           Discover More <span className="text-3xl">📢</span>
         </h2>
-        <p className="text-sm font-semibold">
+        <p className="text-sm">
           Take an advanced path on your career development
         </p>
 
@@ -389,7 +387,7 @@ const DiscoverMoreBoxes = () => {
         return (
           <div
             key={idx}
-            className="p-6 border border-zinc-200  rounded-2xl flex flex-col gap-2 cursor-pointer shadow-2xl shadow-zinc-100 group"
+            className="p-6 border border-zinc-300  rounded-2xl flex flex-col gap-2 cursor-pointer shadow-2xl shadow-zinc-100 group"
           >
             <div className="flex gap-6 justify-between">
               <div
@@ -399,7 +397,7 @@ const DiscoverMoreBoxes = () => {
               </div>
               <div className="flex flex-col gap-4">
                 <h1 className="text-md font-semibold">{item.title}</h1>
-                <p className="text-sm pr-2 font-medium">{item.description}</p>
+                <p className="text-sm pr-2">{item.description}</p>
               </div>
               <div className="h-full flex items-center">
                 <IoIosArrowForward size={25} />
@@ -416,10 +414,10 @@ const LevelUp = () => {
   return (
     <div className="w-full flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <h2 className="text-lg font-bold">
+        <h2 className="text-lg font-semibold">
           Level Up Your Skills <span className="text-3xl">🤖 </span>
         </h2>
-        <p className="text-sm font-semibold">
+        <p className="text-sm">
           Embark on an advanced path to enhance your development expertise with
           essential tools.
         </p>
@@ -440,38 +438,41 @@ const LevelUpBoxes = () => {
       icon: IoIosGitBranch,
       image:
         "https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/141_Git_logo_logos-1024.png",
-    },
-    {
-      id: 2,
-      title: "Get Started with GitHub",
-      description:
-        "Discover how to manage your projects, collaborate with others, and build your portfolio",
-      icon: FaGithub,
-      image: "http://pngimg.com/uploads/github/github_PNG76.png",
+      link: "/learn-git",
     },
   ];
   return (
-    <div className="mt-8 w-full grid md:grid-cols-2 gap-4">
+    <div className="mt-8 w-full  gap-4">
       {Boxes.map((item, idx) => {
-        const Icon = item.icon;
         return (
-          <div
-            key={idx}
-            className="p-10 flex flex-col gap-2 bg-gradient-to-br from-zinc-700 to-zinc-800 rounded-2xl shadow-2xl shadow-zinc-100 cursor-pointer text-white relative overflow-hidden"
-          >
-            <img
-              src={item.image}
-              alt="github logo"
-              className="w-36 absolute -bottom-2 -right-4 opacity-40"
+          <div className="p-10 md:p-14 h-[400px] flex flex-col gap-2 bg-gradient-to-br from-zinc-800 to-zinc-950 rounded-2xl shadow-2xl shadow-zinc-100  text-white relative overflow-hidden">
+            <motion.img
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1.5 }}
+              transition={{
+                duration: 3,
+                damping: 10,
+              }}
+              src="https://moniquemidio.github.io/clone_interface_github/assets/mundo.png"
+              alt="globe"
+              className="absolute -bottom-24 -right-12 w-60 md:w-[450px]"
             />
-            <div className="flex gap-6 justify-between">
-              <div className="p-2 self-start bg-zinc-600 text-zinc-200 rounded-full">
-                <Icon size={20} />
-              </div>
-              <div className="flex flex-col gap-4 z-10">
-                <h1 className="text-md font-semibold">{item.title}</h1>
-                <p className="text-sm pr-2 text-zinc-300">{item.description}</p>
-              </div>
+            <div className="max-w-md flex flex-col gap-6">
+              <h1 className="text-4xl font-bold font-Merriweather">
+                Get Started with <span className="text-orange-600">GIT</span>{" "}
+                for VCS
+              </h1>
+              <p className="text-zinc-300 font-medium text-sm">
+                Introductory guide focused on helping beginners understand the
+                basics of using Git for version control.
+              </p>
+
+              <Link
+                to="/learn-git"
+                className="mt-10 self-start text-sm font-semibold bg-gradient-to-br from-white to-zinc-500 py-3 px-8 rounded-full text-black hover:opacity-70 duration-500"
+              >
+                Learn Git
+              </Link>
             </div>
           </div>
         );

@@ -8,20 +8,20 @@ export default function LoadingQuotes() {
   const [isVisible, setIsVisible] = useState(true);
   const quotes = [
     {
-      quote: "Code is like humor. When you have to explain it, it's bad 😅",
+      quote: "Code is like humor. When you have to explain it, it's bad",
       author: "Cory House",
     },
     {
-      quote: "Strive for continuous improvement, instead of perfection 🤗",
+      quote: "Strive for continuous improvement, instead of perfection",
       author: "Kim Collins",
     },
     {
-      quote: "Learning to code is learning to create and innovate 😎",
+      quote: "Learning to code is learning to create and innovate",
       author: "Enda Kenny",
     },
     {
       quote:
-        "Programming isn't about what you know; it's about what you can figure out. ✨",
+        "Programming isn't about what you know; it's about what you can figure out",
       author: "Chris Pine",
     },
     {
@@ -61,7 +61,7 @@ export default function LoadingQuotes() {
           className="w-full h-screen bg-zinc-900 grid place-items-center text-white font-Merriweather"
         >
           <div className="w-full max-w-screen-lg mx-auto flex flex-col justify-center items-center p-10 text-center gap-6">
-            <h1 className="text-5xl">{randomQuote.quote}</h1>
+            <h1 className="text-3xl">{randomQuote.quote}</h1>
             <p className="text-zinc-400">- {randomQuote.author}</p>
             <BarLoader color="white" className="mt-10" speedMultiplier={1} />
           </div>

@@ -19,12 +19,12 @@ export default function StudentSidebar() {
       icon: <PiBooks />,
     },
     {
-      name: "School Modules",
-      link: "/student-dashboard/school-modules",
-      icon: <VscFileSubmodule />,
+      name: "Play Game",
+      link: "/play-game",
+      icon: <LuGamepad2 />,
     },
     {
-      name: "Play Game",
+      name: "Code Playground",
       link: "/play-game",
       icon: <LuGamepad2 />,
     },

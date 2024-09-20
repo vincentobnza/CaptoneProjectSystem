@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { CircularProgress } from "@nextui-org/react";
 import { IoMdCheckboxOutline } from "react-icons/io";
@@ -26,6 +26,8 @@ import {
   TableCell,
 } from "@nextui-org/table";
 import { Link } from "react-router-dom";
+import supabase from "../config/supabaseClient";
+import { useAuth } from "../hooks/AuthContext";
 
 export default function BasicCSS() {
   return (
@@ -65,7 +67,25 @@ const Header = () => {
 };
 
 const ProgressCard = () => {
-  const [progress, setProgress] = useState(20);
+  const [progress, setProgress] = useState(0);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const fetchUsersProgress = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("users_progress")
+          .eq("user_id", user);
+
+        if (error) throw error;
+      } catch (error) {
+        console.log("Error fetching users progress:", error);
+      }
+    };
+
+    fetchUsersProgress();
+  }, []);
+
   return (
     <div className="size-[280px] bg-sky-100 border border-black text-black shadow-[-8px_8px_0px_black] grid place-items-center">
       <div className="flex flex-col justify-center items-center gap-4">
@@ -75,7 +95,7 @@ const ProgressCard = () => {
             svg: "w-36 h-36 drop-shadow-md",
             indicator: "stroke-sky-500",
             track: "stroke-black",
-            value: "text-3xl font-extrabold text-black",
+            value: "text-3xl font-bold text-black",
           }}
           value={progress}
           strokeWidth={4}

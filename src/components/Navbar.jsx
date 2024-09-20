@@ -27,7 +27,7 @@ const Navbar = () => {
     await signOut();
   };
   return (
-    <nav className="sticky top-0 left-0 w-full grid place-items-center bg-white z-[60] p-3">
+    <nav className="sticky top-0 left-0 w-full grid place-items-center bg-white z-[60] p-2">
       <div className="w-full flex max-w-screen-xl mx-auto justify-between items-center relative py-2 px-9 text-zinc-900">
         <div className="flex items-center gap-4">
           <Link
@@ -70,10 +70,7 @@ const Navbar = () => {
           <div className="flex items-center gap-6">
             {user ? (
               // Profile Default is Cat hehehe
-              <Dropdown
-                placement="bottom-end"
-                className="text-xs font-MonaSans"
-              >
+              <Dropdown placement="bottom-end" className="text-xs font-sans">
                 <DropdownTrigger>
                   <div className="flex items-center gap-4">
                     <h1 className="font-bold text-xs">{user.email}</h1>

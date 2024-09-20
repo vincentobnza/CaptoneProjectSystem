@@ -188,46 +188,45 @@ const PopupModal = ({ open, setOpen, setStartGame }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-zinc-900/50 grid place-items-center z-[50] backdrop-blur-lg"
+            className="fixed inset-0 bg-zinc-900 grid place-items-center z-[50] backdrop-blur-lg"
           >
-            <div className="w-[350px] p-5 rounded-lg bg-zinc-800 border border-zinc-600 relative overflow-hidden">
-              <img
-                src="https://cdn-icons-png.flaticon.com/128/10490/10490256.png"
-                alt="opponent"
-                className="w-16 absolute top-2 right-2 opacity-30"
-              />
-              <div className="w-full flex flex-col gap-2">
-                <h1 className="text-lg font-medium">Enter Room</h1>
-                <p className="text-xs text-zinc-400">
+            <div className="w-full max-w-screen-lg mx-auto flex flex-col gap-2 items-center justify-center text-center">
+              <div className="w-full flex flex-col gap-4">
+                <h1 className="text-5xl font-medium font-Merriweather">
+                  Enter Room
+                </h1>
+                <p className="text-md text-zinc-200">
                   Username: {userInfo?.username}
                 </p>
 
-                <input
-                  type="text"
-                  className="mt-5 w-full h-10 border border-zinc-600 bg-zinc-700 rounded focus:border-2 outline-none focus:border-emerald-600 px-2 placeholder:text-xs"
-                  placeholder="Room name"
-                  onChange={(e) => setRoomName(e.target.value)}
-                  required
-                />
+                <div className="w-full max-w-md mx-auto flex flex-col gap-3">
+                  <input
+                    type="text"
+                    className="mt-5 w-full h-14 border border-zinc-600 bg-zinc-700 rounded focus:border-2 outline-none focus:border-emerald-600 px-2 placeholder:text-sm"
+                    placeholder="Room name"
+                    onChange={(e) => setRoomName(e.target.value)}
+                    required
+                  />
 
-                <div className="flex flex-col gap-2">
-                  <button
-                    type="submit"
-                    onClick={createRoom}
-                    className="text-xs font-medium bg-emerald-700 text-white h-10 rounded"
-                  >
-                    Create Room
-                  </button>
-                  {rooms.map((room) => (
+                  <div className="flex flex-col gap-2">
                     <button
-                      key={room.id}
                       type="submit"
-                      onClick={() => joinRoom(room.id)}
-                      className="text-xs font-medium border border-zinc-600 text-zinc-400 h-10 rounded"
+                      onClick={createRoom}
+                      className="text-xs font-medium bg-emerald-700 text-white h-14 rounded"
                     >
-                      Join Room: {room.room_name}
+                      Create Room
                     </button>
-                  ))}
+                    {rooms.map((room) => (
+                      <button
+                        key={room.id}
+                        type="submit"
+                        onClick={() => joinRoom(room.id)}
+                        className="text-xs font-medium border border-zinc-600 text-zinc-400 h-14 rounded"
+                      >
+                        Join Room: {room.room_name}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

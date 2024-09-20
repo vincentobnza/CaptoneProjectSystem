@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
-import Sidebar from "../components/Sidebar";
-import AdminNavbar from "../components/AdminNavbar";
+import React, { useEffect, useState, useCallback } from "react";
+import Sidebar from "../components/Sidebar.jsx";
+import AdminNavbar from "../components/AdminNavbar.jsx";
 import { useLocation } from "react-router-dom";
-import supabase from "../config/supabaseClient";
-import { useState, useCallback } from "react";
+import supabase from "../config/supabaseClient.js";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Dropdown,
@@ -11,38 +10,32 @@ import {
   DropdownMenu,
   DropdownItem,
   Button,
-} from "@nextui-org/react";
-import { RxCaretDown } from "react-icons/rx";
-import { IoMdAdd } from "react-icons/io";
-import {
   Table,
   TableHeader,
   TableColumn,
   TableBody,
   TableRow,
   TableCell,
-} from "@nextui-org/react";
-import NoData from "../components/ui/NoData";
-import { useAuth } from "../hooks/AuthContext.tsx";
-
-import { FaEye } from "react-icons/fa";
-import { RiEditLine } from "react-icons/ri";
-import { AiOutlineDelete } from "react-icons/ai";
-import { Tooltip } from "@nextui-org/react";
-
-import {
+  Tooltip,
   Modal,
   ModalContent,
   ModalHeader,
   ModalBody,
   ModalFooter,
   useDisclosure,
+  Progress,
 } from "@nextui-org/react";
-import { Progress } from "@nextui-org/react";
-import { FaRankingStar } from "react-icons/fa6";
+import { RxCaretDown } from "react-icons/rx";
+import { IoMdAdd } from "react-icons/io";
+import NoData from "../components/ui/NoData.jsx";
+import { useAuth } from "../hooks/AuthContext.tsx";
+import { FaEye } from "react-icons/fa";
+import { AiOutlineDelete } from "react-icons/ai";
 import { IoIosWarning } from "react-icons/io";
+import { MdOutlineSearch } from "react-icons/md";
+import { FaRankingStar } from "react-icons/fa6";
 
-export default function Students() {
+export default function Users() {
   const location = useLocation();
   const [active, setActive] = useState(location.pathname);
   return (
@@ -69,57 +62,92 @@ const Content = () => {
   );
 };
 
-const Header = () => {
-  return (
-    <div className="w-full flex justify-between items-center gap-2">
-      <div className="basis-1/4 flex flex-col gap-2">
-        <h1 className="text-lg font-medium">Manage Students</h1>
-        <p className="text-xs text-zinc-600">
-          This is where you can manage students
-        </p>
-      </div>
+const Inputs = ({ onSearch, onSort }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedKey, setSelectedKey] = useState("Joined");
 
-      <div className="basis-3/4 flex items-center justify-end gap-3">
-        <div className="flex gap-1">
+  const options = {
+    Joined: "Joined",
+    Email: "Email",
+  };
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      onSearch(searchTerm);
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm, onSearch]);
+
+  const handleSelectionChange = (keys) => {
+    const selectedKey = keys.currentKey || keys.values().next().value;
+    setSelectedKey(selectedKey);
+    onSort(selectedKey);
+  };
+
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center justify-end gap-3">
+        <div className="relative flex items-center w-[300px]">
+          <MdOutlineSearch
+            className="absolute left-2 top-1/2 transform -translate-y-1/2 text-zinc-400"
+            size={20}
+          />
           <input
             type="text"
-            className="w-[300px] h-10 border border-zinc-200 px-2 text-xs outline-none focus:border focus:border-emerald-300"
-            placeholder="Search for students"
+            className="w-full h-10 border border-zinc-200 pl-8 pr-2 text-xs outline-none focus:border-2 focus:border-zinc-300 focus:shadow shadow rounded-lg"
+            placeholder="Search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
-        <FilterStudents />
+        <FilterUsers
+          selectedKey={selectedKey}
+          options={options}
+          onSelectionChange={handleSelectionChange}
+        />
       </div>
     </div>
   );
 };
 
-const FilterStudents = () => {
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set(["text"]));
-
-  const selectedValue = React.useMemo(
-    () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
-    [selectedKeys]
+const Header = () => {
+  return (
+    <div className="w-full flex justify-between items-center gap-2">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-2xl font-medium">Users</h1>
+        <p className="text-sm text-zinc-600">View and manage users.</p>
+      </div>
+      <button className="py-2 px-5 rounded-lg bg-gradient-to-b from-emerald-400 to-emerald-500 text-white text-[12px] font-semibold">
+        Create User
+      </button>
+    </div>
   );
+};
+
+const FilterUsers = ({ selectedKey, options, onSelectionChange }) => {
   return (
     <div>
       <Dropdown>
         <DropdownTrigger>
-          <button className="flex items-center gap-2 px-3 h-10 text-xs text-zinc-600 font-semibold border border-zinc-200 outline-none">
-            Filter Users
+          <button className="flex items-center gap-2 px-3 h-10 text-xs text-zinc-400 font-semibold border border-zinc-200 outline-none shadow rounded-lg">
+            Sort by:{" "}
+            <b className="font-bold text-zinc-700">{options[selectedKey]}</b>
             <RxCaretDown size={18} />
           </button>
         </DropdownTrigger>
         <DropdownMenu
-          aria-label="Single selection example"
+          aria-label="Sorting options"
           variant="flat"
           disallowEmptySelection
           selectionMode="single"
-          selectedKeys={selectedKeys}
-          onSelectionChange={setSelectedKeys}
+          selectedKeys={new Set([selectedKey])}
+          onSelectionChange={onSelectionChange}
         >
-          <DropdownItem key="text">Lowest Rank</DropdownItem>
-          <DropdownItem key="number">Highest Rank</DropdownItem>
+          {Object.entries(options).map(([key, value]) => (
+            <DropdownItem key={key}>{value}</DropdownItem>
+          ))}
         </DropdownMenu>
       </Dropdown>
     </div>
@@ -142,13 +170,21 @@ const StudentsTable = () => {
     onOpenChange: onDeleteOpenChange,
   } = useDisclosure();
 
-  const fetchUsersInfo = useCallback(async () => {
+  const fetchUsersInfo = useCallback(async (searchTerm = "") => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
+      let query = supabase
         .from("profile")
-        .select("id, username, first_name, last_name, rank")
-        .order("rank", { ascending: true, nullsLast: true });
+        .select("id, username, first_name, last_name, rank");
+
+      if (searchTerm) {
+        query = query.ilike("username", `%${searchTerm}%`); // Modify search logic if needed
+      }
+
+      const { data, error } = await query.order("rank", {
+        ascending: true,
+        nullsLast: true,
+      });
 
       if (error) throw error;
 
@@ -164,14 +200,12 @@ const StudentsTable = () => {
     fetchUsersInfo();
   }, [fetchUsersInfo]);
 
-  //REALTIME DATA INSERTION
-
   useEffect(() => {
     const channel = supabase
       .channel("realtime:profile")
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "profile" }, // Listen to all events (INSERT, UPDATE, DELETE)
+        { event: "*", schema: "public", table: "profile" },
         (payload) => {
           switch (payload.eventType) {
             case "INSERT":
@@ -190,11 +224,8 @@ const StudentsTable = () => {
               setUsersData((prevData) =>
                 prevData.filter((user) => user.id !== payload.old.id)
               );
-
               setToast(true);
-              setTimeout(() => {
-                setToast(false);
-              }, 3000);
+              setTimeout(() => setToast(false), 3000);
               break;
 
             default:
@@ -229,21 +260,24 @@ const StudentsTable = () => {
     [onDeleteOpenChange]
   );
 
+  const handleSearch = (searchTerm) => {
+    fetchUsersInfo(searchTerm); // Fetch users based on the search term
+  };
+
   return (
     <>
+      <Inputs onSearch={handleSearch} />
+
       <Table
         aria-label="Students table"
-        className="w-full border border-zinc-200 rounded-lg"
-        shadow="none"
+        className="w-full border border-zinc-200 rounded-xl"
+        shadow="sm"
       >
         <TableHeader>
           <TableColumn>ID</TableColumn>
           <TableColumn>Username</TableColumn>
           <TableColumn>First Name</TableColumn>
           <TableColumn>Last Name</TableColumn>
-          <TableColumn>Progress</TableColumn>
-          <TableColumn>Progress Update At</TableColumn>
-          <TableColumn>Rank</TableColumn>
           <TableColumn>Actions</TableColumn>
         </TableHeader>
         <TableBody
@@ -253,7 +287,6 @@ const StudentsTable = () => {
               text="No students yet"
             />
           }
-          loadingContent={<div>Loading...</div>}
           loadingState={loading ? "loading" : "idle"}
         >
           {usersData.map((user) => (
@@ -262,9 +295,6 @@ const StudentsTable = () => {
               <TableCell>{user.username}</TableCell>
               <TableCell>{user.first_name}</TableCell>
               <TableCell>{user.last_name}</TableCell>
-              <TableCell>{/* Add progress data here */}</TableCell>
-              <TableCell>{/* Add progress update data here */}</TableCell>
-              <TableCell>{user.rank}</TableCell>
               <TableCell>
                 <div className="relative flex items-center gap-4">
                   <Tooltip radius="sm" content="Details">
@@ -275,17 +305,12 @@ const StudentsTable = () => {
                       />
                     </span>
                   </Tooltip>
-                  <Tooltip radius="sm" content="Edit user">
-                    <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                      <RiEditLine size={20} />
-                    </span>
-                  </Tooltip>
                   <Tooltip
                     radius="sm"
                     className="bg-red-600 text-white"
                     content="Delete user"
                   >
-                    <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                    <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                       <AiOutlineDelete
                         size={20}
                         onClick={() => handleDeleteUser(user)}
@@ -469,7 +494,7 @@ const DeleteData = ({ isOpen, onOpenChange, user, onUserDeleted }) => {
       backdrop="opaque"
       size="sm"
       isOpen={isOpen}
-      className="z-[100]"
+      className="z-[100] font-MonaSans"
       onOpenChange={onOpenChange}
       motionProps={{
         variants: {
@@ -495,42 +520,23 @@ const DeleteData = ({ isOpen, onOpenChange, user, onUserDeleted }) => {
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1 space-y-4">
+            <ModalHeader className="flex flex-col gap-1 space-y-4 bg-zinc-100 border-b border-zinc-300 shadow">
               <div className="flex flex-col gap-2">
-                <h1 className="text-xl font-semibold">Delete this user?</h1>
-                <p className="text-sm font-normal text-zinc-600">
-                  Are you sure you want to delete{" "}
-                  <span className="font-semibold text-black">
-                    "{user.username}'s"
-                  </span>
-                  data?
-                </p>
-              </div>
-
-              <div className="w-full h-20 p-2 flex justify-start border-l-4 border-red-600 bg-red-50 text-red-800">
-                <div className="flex justify-start gap-2">
-                  <IoIosWarning className="text-red-500" size={24} />
-                  <div className="flex flex-col gap-1">
-                    <p className="text-sm font-bold">Warning</p>
-                    <p className="text-xs">
-                      This action is irreversible and will permanently delete
-                      the user's entire data.
-                    </p>
-                  </div>
-                </div>
+                <h1 className="text-md font-semibold">Delete this user?</h1>
               </div>
             </ModalHeader>
-            <ModalBody></ModalBody>
+            <ModalBody>
+              <h3 className="text-sm font-medium text-zinc-500">
+                Are you sure you want to delete this user?
+              </h3>
+              <p className="font-bold">{user.username}</p>
+
+              <div className="w-full rounded-tl-lg rounded-tr-lg bg-zinc-50">
+                <div className="flex items-center gap-2"></div>
+              </div>
+            </ModalBody>
             <hr />
-            <ModalFooter>
-              <Button
-                size="sm"
-                className="border border-zinc-300 text-zinc-500"
-                auto
-                onClick={onClose}
-              >
-                Cancel
-              </Button>
+            <ModalFooter className="bg-zinc-100 shadow">
               <Button
                 size="sm"
                 className="bg-red-500 rounded-lg text-white"

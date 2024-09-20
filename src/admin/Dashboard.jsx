@@ -116,7 +116,7 @@ const Content = () => {
           {boxInfo.map((item, idx) => (
             <motion.div
               key={idx}
-              className="w-full h-[130px] border border-zinc-200 bg-white shadow-2xl shadow-zinc-50 p-6 flex items-center justify-center flex-col gap-2 rounded duration-500 relative overflow-hidden"
+              className="w-full h-[130px] border border-zinc-300 bg-white shadow-2xl shadow-zinc-50 p-6 flex items-center justify-center flex-col gap-2 rounded-2xl duration-500 relative overflow-hidden"
             >
               <div className="w-full flex justify-start items-start gap-6">
                 <Skeleton isLoaded={loaded} className="rounded-full">
@@ -128,7 +128,9 @@ const Content = () => {
                 </Skeleton>
                 <div className="flex flex-col gap-2 text-zinc-800">
                   <Skeleton className="rounded-lg" isLoaded={loaded}>
-                    <p className="text-sm text-zinc-600">{item.description}</p>
+                    <p className="text-sm text-zinc-600 font-semibold">
+                      {item.description}
+                    </p>
                   </Skeleton>
                   <div className="flex items-start ">
                     <Skeleton className="rounded-lg" isLoaded={loaded}>

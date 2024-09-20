@@ -7,7 +7,7 @@ import { MdOutlineArrowOutward } from "react-icons/md";
 
 export default function Explore() {
   return (
-    <div className="w-full h-screen bg-white space-y-16 relative">
+    <div className="w-full h-screen bg-white space-y-6 relative">
       <Navbar />
       <Content />
       {/* <div
@@ -20,8 +20,16 @@ export default function Explore() {
 
 const Content = () => {
   return (
-    <section className="space-y-2 flex  w-full max-w-screen-xl mx-auto  justify-between items-center p-8">
+    <section className="space-y-2 flex  w-full max-w-screen-xl mx-auto  justify-between items-center p-5">
       <div className="w-full max-w-screen-md mx-auto flex flex-col gap-2 justify-center items-center text-center sm:p-5 md:p-5 lg:p-0">
+        <motion.h1
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="text-sm font-semibold py-2 px-4 border border-emerald-400 mb-4 rounded-full text-emerald-700 bg-emerald-50"
+        >
+          # Learn with Codecian
+        </motion.h1>
         <motion.h1
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -47,7 +55,7 @@ const Content = () => {
         >
           <Link
             to="/student-dashboard"
-            className="mt-8 flex items-center gap-2 font-semibold text-sm underline underline-offset-8  decoration-zinc-700 text-black"
+            className="mt-8 flex items-center gap-2 font-semibold text-sm underline underline-offset-8  decoration-zinc-700 text-black font-Merriweather"
           >
             Explore Codecian Resources
             <MdOutlineArrowOutward size={16} />

@@ -45,14 +45,14 @@ const LoginForm = () => {
             <GrSecure size={20} />
             <p>Login</p>
           </div>
-          <h1 className="font-semibold text-4xl tracking-wide">
+          <h1 className="font-medium text-4xl tracking-wide">
             LOG TO CODECIAN
           </h1>
           <div className="flex items-center gap-2">
             <p>New to Codecian ?</p>
             <Link
               to="/signup"
-              className="text-emerald-500 underline underline-offset-4 font-semibold"
+              className="text-emerald-500 underline underline-offset-4 font-medium"
             >
               Sign Up
             </Link>

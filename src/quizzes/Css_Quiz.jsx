@@ -30,6 +30,9 @@ export default function Css_Quiz() {
   const [points, setPoints] = useState(0);
   const { user } = useAuth();
 
+  //CSS QUIZ PROGRESS
+  const [progress, setProgress] = useState(0);
+
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
@@ -76,16 +79,32 @@ export default function Css_Quiz() {
     const pointsAdded = totalScore * 5;
     setPoints(pointsAdded);
 
+    const updatedProgress = ((currentQuestionIndex + 1) / quiz.length) * 100;
+    setProgress(updatedProgress);
+
+    //insert progress to users_progress table
+
+    const insertProgress = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("users_progress")
+          .insert("basic_css", progress)
+          .eq("user_id", user.id);
+      } catch (error) {
+        console.log("Error inserting your progress", error);
+      }
+    };
+
+    insertProgress();
+
     if (user) {
       try {
-        // Fetch current points from Supabase
         const { data: currentData, error: fetchError } = await supabase
           .from("profile")
           .select("points")
           .eq("id", user.id)
-          .limit(1); // Fetch only one row
+          .limit(1);
 
-        // Handle case where no data is returned
         if (!currentData || currentData.length === 0) {
           console.error("User profile does not exist. Creating new profile.");
           const { data: insertData, error: insertError } = await supabase
@@ -127,6 +146,11 @@ export default function Css_Quiz() {
       }
     } else {
       console.error("User is not authenticated, cannot update points.");
+    }
+
+    //insert progress to users progress
+
+    if (user) {
     }
   };
 
